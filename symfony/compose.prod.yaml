@@ -1,0 +1,16 @@
+name: ${PROJECT_NAME}-prod
+services:
+    mysql:
+        environment:
+            LOG_LEVEL: "error"
+
+    www:
+        build:
+            dockerfile: ./Dockerfile-prod
+            args:
+                PHP_VERSION: "8.3.11"
+        ports:
+            - 8000:80
+        depends_on:
+            - mysql
+        # restart: always Relou pour les tests

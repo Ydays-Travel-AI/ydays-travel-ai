@@ -1,0 +1,47 @@
+ARG PHP_VERSION
+
+FROM php:${PHP_VERSION}-apache
+
+WORKDIR /var/www
+
+RUN apt-get update &&\
+    apt-get install -qq -y --no-install-recommends \
+    locales \
+    coreutils \
+    apt-utils \
+    git \
+    libpng-dev \
+    libonig-dev
+RUN echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen &&\
+    locale-gen fr_FR.UTF-8 &&\
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/*
+
+# Installer Composer
+COPY --from=composer:2.1 /usr/bin/composer /usr/local/bin/composer
+
+# Installer les extensions PHP via install-php-extensions
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions &&\
+    sync &&\
+    install-php-extensions pdo_mysql mysqli gd opcache zip dom mbstring apcu &&\
+    a2enmod rewrite
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN echo "LogLevel error" >> /etc/apache2/apache2.conf
+
+# Dockerfile should be in the root of the project
+COPY --chown=www-data:www-data . .
+# Grant privileges for /var/www/
+RUN chown -R www-data:www-data . && \
+    chmod -R 775 .
+
+RUN mv apache.conf /etc/apache2/sites-enabled &&\
+    rm /etc/apache2/sites-enabled/000-default.conf
+    # a2ensite default-ssl.conf
+    
+USER www-data
+
+RUN composer install --no-dev --optimize-autoloader
+RUN php bin/console cache:warmup --env=prod
+RUN composer dump-env prod
