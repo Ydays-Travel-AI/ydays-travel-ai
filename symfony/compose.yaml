@@ -5,7 +5,9 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION}
     ports:
-      - 8000:80
+      - 8000:8000
+    volumes:
+      - .:/var/www
     depends_on:
       - mysql
     # restart: always Relou pour les tests

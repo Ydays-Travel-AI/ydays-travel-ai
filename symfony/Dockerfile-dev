@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 
-FROM php:${PHP_VERSION}-apache
+FROM php:${PHP_VERSION}
 
 WORKDIR /var/www
 
@@ -22,24 +22,11 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     gd \
     opcache \
     zip \
-    mbstring \
-    a2enmod rewrite
+    mbstring
 
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-RUN echo "LogLevel error" >> /etc/apache2/apache2.conf
+RUN curl -sS https://get.symfony.com/cli/installer | bash && \
+    mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
-# Dockerfile should be in the root of the project
-COPY --chown=www-data:www-data . .
-# Grant privileges for /var/www/
-RUN chown -R www-data:www-data . && \
-    chmod -R 775 .
+EXPOSE 8000
 
-RUN mv apache.conf /etc/apache2/sites-enabled &&\
-    rm /etc/apache2/sites-enabled/000-default.conf
-    # a2ensite default-ssl.conf
-    
-USER www-data
-
-RUN composer install --no-dev --optimize-autoloader
-RUN php bin/console cache:warmup --env=prod
-RUN composer dump-env prod
+CMD ["symfony","server:start", "--no-tls", "--allow-all-ip"]
