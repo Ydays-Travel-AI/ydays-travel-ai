@@ -1,4 +1,15 @@
 services:
+  www:
+    build:
+      dockerfile: ./Dockerfile-${APP_ENV}
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    ports:
+      - 8000:80
+    depends_on:
+      - mysql
+    # restart: always Relou pour les tests
+
   mysql:
     image: mysql:${MYSQL_VERSION}
     environment:
