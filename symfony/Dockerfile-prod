@@ -6,15 +6,9 @@ WORKDIR /var/www
 
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    locales \
-    coreutils \
-    apt-utils \
-    git \
     libpng-dev \
     libonig-dev
-RUN echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen &&\
-    locale-gen fr_FR.UTF-8 &&\
-    apt-get clean &&\
+RUN apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
 
 # Installer Composer
@@ -23,8 +17,12 @@ COPY --from=composer:2.1 /usr/bin/composer /usr/local/bin/composer
 # Installer les extensions PHP via install-php-extensions
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions &&\
-    sync &&\
-    install-php-extensions pdo_mysql mysqli gd opcache zip dom mbstring apcu &&\
+    install-php-extensions \
+    pdo_mysql \
+    gd \
+    opcache \
+    zip \
+    mbstring \
     a2enmod rewrite
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
