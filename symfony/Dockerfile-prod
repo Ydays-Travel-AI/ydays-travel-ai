@@ -40,6 +40,7 @@ RUN mv apache.conf /etc/apache2/sites-enabled &&\
     
 USER www-data
 
+# todo générer un APP_SECRET
 RUN composer install --no-dev --optimize-autoloader
 RUN php bin/console cache:warmup --env=prod
 RUN composer dump-env prod

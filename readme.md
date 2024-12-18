@@ -9,22 +9,36 @@ Le but de cette application est d'organiser des voyages de A à Z, notament avec
 
 Aller dans le dossier `symfony/`.
 Creer un fichier `.env.local` avec APP_SECRET.
+Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / prod).
 
 ## En production
 
 Tout le projet est inclus dans le container docker mais les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
-- Dans le fichier `.env` mettre APP_ENV=prod
-- `docker-compose -f compose.yaml -f compose.prod.yaml up -d --build` : créé les containers (--build pour recopier les nouveaux fichiers)
+Créer les containers (--build pour recopier les nouveaux fichiers) : `docker-compose -f compose.yaml -f compose.prod.yaml up -d --build`
 
 ## En developpement
 
-! PHP, Composer et le CLI de Symfony doivent être installés en local.
+`docker-compose up -d --build` : créé les containers (utilise compose et compose.override)
 
-- Dans le fichier `.env` mettre APP_ENV=dev
-- `composer install` : télécharge les dépendances
-- `docker-compose up -d` : créé les containers (utilise compose et compose.override)
-- `symfony server:start` : démarre le serveur en local
+### Latence liée à la synchronisation
+
+> Seulement pour WSL (sur windows)  
+> Le mapping des dossier /var et /vendor font énormement ramer car à chaque modification, docker tente de synchroniser les fichiers avec l'hôte.
+
+=> Les calls passes de 60ms à 1500ms
+
+Malgré une tentative avec "read only" (ro) et "delegated" sur les volumes, les performances ne changent pas.
+
+Pour permettre de meilleures performances, le mapping de `/var` a été retiré. Se faisant, il n'est plus synchronisé. `/vendor` ne peut pas subir la même solution sinon les librairies ne seraient plus synchronisés entre l'hôte et le container.
+
+**Solutions :**
+
+- Mapping de `/vendor` (latence élevée)
+- Isolation de `/vendor` (synchronisation absente)
+
+  - Chaque installation faite en local doit être suivie d'un `composer install` dans le container (pour synchroniser docker).
+  - Extension d'IDE pour modifier le code directement dans le container (`/vendor` seulement sur docker).
 
 # Base de données
 

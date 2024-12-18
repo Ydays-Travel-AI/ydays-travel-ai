@@ -8,6 +8,8 @@ services:
       - 8000:8000
     volumes:
       - .:/var/www
+      - /var/www/var
+      - /var/www/vendor
     depends_on:
       - mysql
     # restart: always Relou pour les tests
