@@ -11,6 +11,11 @@ Aller dans le dossier `symfony/`.
 Creer un fichier `.env.local` avec APP_SECRET.
 Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / prod).
 
+Pour developper sur symfony, 2 possibilités:
+
+- Développer en local : l'installation en local de php, composer et le cli symfony est necessaire.
+- Container de développement (notament intégré dans VsCode via l'extension "Remote Development")
+
 ## En production
 
 Tout le projet est inclus dans le container docker mais les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
@@ -21,12 +26,12 @@ Créer les containers (--build pour recopier les nouveaux fichiers) : `docker-co
 
 `docker-compose up -d --build` : créé les containers (utilise compose et compose.override)
 
-### Latence liée à la synchronisation
+### Latence liée à la synchronisation (sur Windows)
 
 > Seulement pour WSL (sur windows)  
 > Le mapping des dossier /var et /vendor font énormement ramer car à chaque modification, docker tente de synchroniser les fichiers avec l'hôte.
 
-=> Les calls passes de 60ms à 1500ms
+=> Les calls passent de 60ms à 1500ms
 
 Malgré une tentative avec "read only" (ro) et "delegated" sur les volumes, les performances ne changent pas.
 
@@ -36,9 +41,9 @@ Pour permettre de meilleures performances, le mapping de `/var` a été retiré.
 
 - Mapping de `/vendor` (latence élevée)
 - Isolation de `/vendor` (synchronisation absente)
+  - Si le développement se fait en dehors d’un conteneur de dev, il faut exécuter un `composer install` dans le conteneur après chaque installation ou mise à jour de dépendances en local, car les bibliothèques (`/vendor`) ne sont pas synchronisées automatiquement.
 
-  - Chaque installation faite en local doit être suivie d'un `composer install` dans le container (pour synchroniser docker).
-  - Extension d'IDE pour modifier le code directement dans le container (`/vendor` seulement sur docker).
+Puisque nous développons en windows, nous avons decidé d'isoler `/vendor`.
 
 # Base de données
 

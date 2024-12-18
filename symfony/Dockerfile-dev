@@ -6,6 +6,7 @@ WORKDIR /var/www
 
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
+    unzip \
     libpng-dev \
     libonig-dev
 RUN apt-get clean &&\
@@ -26,6 +27,9 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+
+RUN apt-get update &&\
+    apt-get install -y git
 
 EXPOSE 8000
 

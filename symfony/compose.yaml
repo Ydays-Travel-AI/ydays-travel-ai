@@ -1,5 +1,5 @@
 services:
-  www:
+  symfony:
     build:
       dockerfile: ./Dockerfile-${APP_ENV}
       args:
