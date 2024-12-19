@@ -1,13 +1,19 @@
 name: ${PROJECT_NAME}-dev
 services:
-    mysql:
-        ports:
-            - 3306:3306
-    # mailer:
-    #     image: axllent/mailpit
-    #     ports:
-    #         - "1025"
-    #         - "8025"
-    #     environment:
-    #         MP_SMTP_AUTH_ACCEPT_ANY: 1
-    #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
+  symfony:
+    volumes:
+      - .:/var/www
+      - /var/www/var
+      - /var/www/vendor
+      - extensions:/root/.vscode-server/extensions
+  # mailer:
+  #     image: axllent/mailpit
+  #     ports:
+  #         - "1025"
+  #         - "8025"
+  #     environment:
+  #         MP_SMTP_AUTH_ACCEPT_ANY: 1
+  #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  extensions:
