@@ -15,7 +15,8 @@
         "shd101wyy.markdown-preview-enhanced",
         "xdebug.php-debug",
         "esbenp.prettier-vscode",
-        "davidanson.vscode-markdownlint"
+        "davidanson.vscode-markdownlint",
+        "bmewburn.vscode-intelephense-client"
       ]
     }
   }

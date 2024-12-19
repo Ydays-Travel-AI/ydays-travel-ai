@@ -13,7 +13,7 @@ Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / 
 
 Pour developper sur symfony, 2 possibilités:
 
-- Développer en local : l'installation en local de php, composer et le cli symfony est necessaire.
+- Développer en local : l'installation en local de php et composer sont necessaires (pour l'analyse de code).
 - Container de développement :
   - Sur VSCode : Extension "Remote Development" :
     - "Open foler in container" (`CTRL+SHIFT+P`). Lecture du fichier devcontainer.json et lancement des container et des extensions automatiquement.
