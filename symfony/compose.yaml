@@ -13,7 +13,9 @@ services:
   mysql:
     image: mysql:${MYSQL_VERSION}
     environment:
-      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_DATABASE: ${PROJECT_NAME}
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=${DATABASE_ROOT_PASSWORD}"]
@@ -28,8 +30,6 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     environment:
       PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     ports:
       - 8080:80
     depends_on:
