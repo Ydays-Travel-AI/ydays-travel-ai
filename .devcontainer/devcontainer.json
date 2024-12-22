@@ -8,15 +8,20 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "mhutchie.git-graph",
+        // DEV
+        "bmewburn.vscode-intelephense-client",
         "github.copilot",
-        "eamodio.gitlens",
-        "devsense.phptools-vscode",
-        "shd101wyy.markdown-preview-enhanced",
         "xdebug.php-debug",
+
+        // CI
+        "mhutchie.git-graph",
+        "eamodio.gitlens",
         "junstyle.php-cs-fixer",
+
+        // Markdown
+        "shd101wyy.markdown-preview-enhanced",
         "davidanson.vscode-markdownlint",
-        "bmewburn.vscode-intelephense-client"
+        "valentjn.vscode-ltex"
       ]
     },
     "settings": {
@@ -25,7 +30,8 @@
       },
       "editor.formatOnSave": true,
       "php-cs-fixer.executablePath": "${workspaceFolder}/symfony/vendor/bin/php-cs-fixer",
-      "php-cs-fixer.config": "/var/www/symfony/.php-cs-fixer.dist.php"
+      "php-cs-fixer.config": "/var/www/symfony/.php-cs-fixer.dist.php",
+      "ltex.language": "fr"
     }
   }
 }
