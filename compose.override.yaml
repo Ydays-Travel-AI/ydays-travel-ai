@@ -3,9 +3,12 @@ services:
   symfony:
     volumes:
       - .:/var/www
-      - /var/www/var
-      - /var/www/vendor
+      - /var/www/symfony/var
+      - /var/www/symfony/vendor
+      - /var/www/angular/node_modules
       - extensions:/root/.vscode-server/extensions
+    ports:
+      - 9003:9003
   # mailer:
   #     image: axllent/mailpit
   #     ports:
@@ -19,5 +22,16 @@ services:
     environment:
       PMA_USER: root
       PMA_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+
+  # devcontainer:
+  #   build:
+  #     context: .
+  #     dockerfile: .devcontainer/Dockerfile.dev
+  #   volumes:
+  #     - ..:/workspace
+  #   networks:
+  #     - dev-network
+  #   stdin_open: true
+  #   tty: true
 volumes:
   extensions:

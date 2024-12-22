@@ -1,11 +1,13 @@
 services:
   symfony:
     build:
+      context: /symfony
       dockerfile: ./Dockerfile-${APP_ENV}
       args:
         PHP_VERSION: ${PHP_VERSION}
     ports:
       - 8000:8000
+      - 4200:4200
     depends_on:
       - mysql
     # restart: always Relou pour les tests
@@ -34,6 +36,5 @@ services:
       - 8080:80
     depends_on:
       - mysql
-
 volumes:
   db-data:
