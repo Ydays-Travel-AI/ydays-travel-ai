@@ -27,7 +27,14 @@ Créer les containers (--build pour recopier les nouveaux fichiers) : `docker-co
 
 ## En developpement
 
-`docker-compose up -d --build` : créé les containers (utilise compose et compose.override)
+`docker-compose up -d --build` : créé les containers (utilise compose et compose.override).
+
+Pour développer, XDebug est installé. Pour l'activer il suffit de mettre son IDE en écoute sur le port 9003 ("Start Debugging"), et de donner l'ordre à symfony de se mettre en mode deboggage. Pour ce faire 2 solutions :
+
+- Temporaire : pour chaque requete, inclure le paramètre `?XDEBUG_SESSION=VSCODE` dans l'url ou dans le header.
+- Permanente : Pour que le mode deboggage persiste sur plusieurs requêtes, aller dans la console du navigateur puis :
+  - Activation : fabriquer un cookie via `document.cookie = "XDEBUG_SESSION=VSCODE";`.
+  - Désactivatioon : supprimer le cookie via `document.cookie = "XDEBUG_SESSION; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";`.
 
 ### Latence liée à la synchronisation (sur Windows)
 
@@ -38,13 +45,14 @@ Créer les containers (--build pour recopier les nouveaux fichiers) : `docker-co
 
 Malgré une tentative avec "read only" (ro) et "delegated" sur les volumes, les performances ne changent pas.
 
-Pour permettre de meilleures performances, le mapping de `/var` a été retiré. Se faisant, il n'est plus synchronisé. `/vendor` ne peut pas subir la même solution sinon les librairies ne seraient plus synchronisés entre l'hôte et le container.
+Pour permettre de meilleures performances, `var/` n'est plus synchronisé entre l'hôte et le container. On peut faire ceci car il n'est pas très utile pour le développement et peut rester uniquement dans le container. Ce n'est pas aussi simple pour `vendor/` car il est necessaire en local pour développer.
 
 **Solutions :**
 
-- Mapping de `/vendor` (latence élevée)
+- Mapping de `/vendor` (latence élevée sur Windows)
 - Isolation de `/vendor` (synchronisation absente)
-  - Si le développement se fait en dehors d’un conteneur de dev, il faut exécuter un `composer install` dans le conteneur après chaque installation ou mise à jour de dépendances en local, car les bibliothèques (`/vendor`) ne sont pas synchronisées automatiquement.
+  - Développement dans un devcontainer : accès direct aux librairies présentes dans le container.
+  - Sinon : il faut exécuter un `composer install` dans le conteneur après chaque installation ou mise à jour de dépendances en local, car les bibliothèques (`/vendor`) ne sont pas synchronisées automatiquement.
 
 Puisque nous développons en windows, nous avons decidé d'isoler `/vendor`.
 
