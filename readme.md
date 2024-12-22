@@ -54,7 +54,15 @@ Pour permettre de meilleures performances, `var/` n'est plus synchronisé entre 
   - Développement dans un devcontainer : accès direct aux librairies présentes dans le container.
   - Sinon : il faut exécuter un `composer install` dans le conteneur après chaque installation ou mise à jour de dépendances en local, car les bibliothèques (`/vendor`) ne sont pas synchronisées automatiquement.
 
-Puisque nous développons en windows, nous avons decidé d'isoler `/vendor`.
+Puisque nous développons en windows, nous avons décidé d'isoler `/vendor`.
+
+### Formatage
+
+En développement, la librairie "php-cs-formatter" permet de formater les fichiers PHP, afin d'avoir une nomenclature uniforme sur le dépôt.
+
+L'extension VSCode "junstyle.php-cs-fixer" est parametrée dans le devcontainer. Elle formate les fichiers dès qu'on sauvegarde, en utilisant la configuration dans le fichier `.php-cs-fixer.dist.php`.
+
+Sinon, on peut formater les fichiers manuellement grâce à `composer format`. Ce script est par ailleurs exécuté à chaque commit.
 
 # Base de données
 
