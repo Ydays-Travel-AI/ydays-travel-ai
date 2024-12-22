@@ -7,7 +7,6 @@ services:
         PHP_VERSION: ${PHP_VERSION}
     ports:
       - 8000:8000
-      - 4200:4200
     depends_on:
       - mysql
     # restart: always Relou pour les tests

@@ -62,9 +62,13 @@ Sinon, on peut formater les fichiers manuellement grâce à `composer format`. C
 Pour développer, XDebug est installé. Pour l'activer il suffit de mettre son IDE en écoute sur le port 9003 ("Start Debugging"), et de donner l'ordre à symfony de se mettre en mode débogage. Pour ce faire 2 solutions :
 
 - Temporaire : pour chaque requête, inclure le paramètre `?XDEBUG_SESSION=VSCODE` dans l'URL ou dans le header.
-- Permanente : Pour que le mode débogage persiste sur plusieurs requêtes, aller dans la console du navigateur puis :
-  - Activation : fabriquer un cookie via `document.cookie = "XDEBUG_SESSION=VSCODE";`.
-  - Désactivation : supprimer le cookie via `document.cookie = "XDEBUG_SESSION; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";`.
+- Permanente : Pour que le mode débogage persiste sur plusieurs requêtes :
+  - Activation :
+    - via la console du navigateur : `document.cookie = "XDEBUG_SESSION=VSCODE";`.
+    - via un parametre d'url ou header `?XDEBUG_SESSION_START=1`
+  - Désactivation :
+    - via la console du navigateur : `document.cookie = "XDEBUG_SESSION; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";`.
+    - via un paramètre d'url ou header `XDEBUG_SESSION_STOP=1`
 
 # Base de données
 

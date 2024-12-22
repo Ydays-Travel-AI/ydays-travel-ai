@@ -6,8 +6,7 @@ services:
       - /var/www/symfony/var
       - /var/www/symfony/vendor
       - /var/www/angular/node_modules
-    ports:
-      - 9003:9003
+
   # mailer:
   #     image: axllent/mailpit
   #     ports:
