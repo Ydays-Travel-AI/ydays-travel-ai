@@ -49,6 +49,7 @@
     "scripts": {
         "format": "php-cs-fixer fix",
         "format-check": "php-cs-fixer fix --dry-run --diff",
+        "sync-db": "php bin/console doctrine:schema:update --force",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
