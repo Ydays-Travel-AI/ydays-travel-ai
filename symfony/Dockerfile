@@ -1,6 +1,6 @@
+# --------------------------------------------------------------
 ARG PHP_VERSION
-
-FROM php:${PHP_VERSION}
+FROM php:${PHP_VERSION} AS dev
 
 WORKDIR /var/www
 
@@ -40,4 +40,4 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
     
 EXPOSE 8000
 
-CMD ["sh","-c", "cd symfony && composer install && symfony server:start --no-tls --allow-all-ip"]
+CMD ["sh","-c", "composer install && symfony server:start --no-tls --allow-all-ip"]

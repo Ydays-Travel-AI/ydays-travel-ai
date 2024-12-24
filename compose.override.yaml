@@ -2,10 +2,9 @@ name: ${PROJECT_NAME}-dev
 services:
   symfony:
     volumes:
-      - .:/var/www
-      - /var/www/symfony/var
-      - /var/www/symfony/vendor
-      - /var/www/angular/node_modules
+      - ./symfony:/var/www
+      - symfony-var:/var/www/var
+      - symfony-vendor:/var/www/vendor
 
   # mailer:
   #     image: axllent/mailpit
@@ -15,8 +14,23 @@ services:
   #     environment:
   #         MP_SMTP_AUTH_ACCEPT_ANY: 1
   #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
+  symfony-dev:
+    build:
+      context: /symfony
+      target: dev
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    volumes:
+      - .:/workspace
+      - symfony-var:/workspace/var
+      - symfony-vendor:/workspace/vendor
+    command: sleep infinity
 
   phpmyadmin:
     environment:
       PMA_USER: root
       PMA_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+
+volumes:
+  symfony-vendor:
+  symfony-var:

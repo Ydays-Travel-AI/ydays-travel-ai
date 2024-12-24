@@ -2,13 +2,15 @@ services:
   symfony:
     build:
       context: /symfony
-      dockerfile: ./Dockerfile-${APP_ENV}
       args:
         PHP_VERSION: ${PHP_VERSION}
+      target: ${APP_ENV}
     ports:
       - 8000:8000
     depends_on:
       - mysql
+    volumes:
+      - ./.env:/var/www/.env
     # restart: always Relou pour les tests
 
   mysql:
