@@ -41,3 +41,47 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
 EXPOSE 8000
 
 CMD ["sh","-c", "composer install && symfony server:start --no-tls --allow-all-ip"]
+
+# --------------------------------------------------------------
+ARG PHP_VERSION
+FROM php:${PHP_VERSION}-apache AS prod
+
+WORKDIR /var/www
+
+RUN apt-get update &&\
+    apt-get install -qq -y --no-install-recommends \
+    libpng-dev \
+    libonig-dev
+RUN apt-get clean &&\
+    rm -rf /var/lib/apt/lists/*
+
+# Installer Composer
+COPY --from=composer:2.1 /usr/bin/composer /usr/local/bin/composer
+
+# Installer les extensions PHP via install-php-extensions
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions &&\
+    install-php-extensions \
+    pdo_mysql \
+    gd \
+    opcache \
+    zip \
+    mbstring 
+    
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN echo "LogLevel error" >> /etc/apache2/apache2.conf
+
+COPY --chown=www-data:www-data . .
+
+RUN chown -R www-data:www-data . &&\
+    chmod -R 775 .
+
+RUN mv apache.conf /etc/apache2/sites-enabled &&\
+    rm /etc/apache2/sites-enabled/000-default.conf
+    # a2ensite default-ssl.conf
+    
+USER www-data
+
+# todo générer un APP_SECRET
+
+CMD ["sh", "-c", "composer install --no-dev --optimize-autoloader && php bin/console cache:warmup --env=prod && apache2-foreground"]
