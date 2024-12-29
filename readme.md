@@ -13,21 +13,21 @@ Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / 
 
 Pour développer sur Symfony, 2 possibilitées:
 
-- Développer en local : l'installation en local de PHP et composer sont nécessaires (pour l'analyse de code).
-- Container de développement :
-  - Sur VSCode : Extension "Remote Development" :
-    - "Open foler in container" (`CTRL+SHIFT+P`). Lecture du fichier devcontainer.json et lancement des container et des extensions automatiquement.
-    - "Attach to running container" (`CTRL+SHIFT+P`). Simple entrée dans un container en cours, sans toucher à la configuration du VSCode.
+-   Développer en local : l'installation en local de PHP et composer sont nécessaires (pour l'analyse de code).
+-   Container de développement :
+    -   Sur VSCode : Extension "Remote Development" :
+        -   "Open foler in container" (`CTRL+SHIFT+P`). Lecture du fichier devcontainer.json et lancement des container et des extensions automatiquement.
+        -   "Attach to running container" (`CTRL+SHIFT+P`). Simple entrée dans un container en cours, sans toucher à la configuration du VSCode.
 
 ## En production
 
 Tout le projet est inclus dans le container docker mais les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
-Créer les containers (--build pour recopier les nouveaux fichiers) : `docker-compose -f compose.yaml -f compose.prod.yaml up -d --build`
+Créer les containers (--build pour recopier les nouveaux fichiers) : `docker compose -f compose.yaml up -d --build`
 
 ## En développement
 
-`docker-compose up -d --build` : créé les containers (utilise compose et compose.override).
+`docker compose up -d --build` : créé les containers (utilise compose et compose.override).
 
 ### Latence liée à la synchronisation (sur Windows)
 
@@ -42,10 +42,10 @@ Pour permettre de meilleures performances, `var/` n'est plus synchronisé entre 
 
 **Solutions :**
 
-- Mapping de `/vendor` (latence élevée sur Windows)
-- Isolation de `/vendor` (synchronisation absente)
-  - Développement dans un devcontainer : accès direct aux librairies présentes dans le container.
-  - Sinon : il faut exécuter un `composer install` dans le conteneur après chaque installation ou mise à jour de dépendances en local, car les bibliothèques (`/vendor`) ne sont pas synchronisées automatiquement.
+-   Mapping de `/vendor` (latence élevée sur Windows)
+-   Isolation de `/vendor` (synchronisation absente)
+    -   Développement dans un devcontainer : accès direct aux librairies présentes dans le container.
+    -   Sinon : il faut exécuter un `composer install` dans le conteneur après chaque installation ou mise à jour de dépendances en local, car les bibliothèques (`/vendor`) ne sont pas synchronisées automatiquement.
 
 Puisque nous développons en windows, nous avons décidé d'isoler `/vendor`.
 
@@ -61,14 +61,14 @@ Sinon, on peut formater les fichiers manuellement grâce à `composer format`. C
 
 Pour développer, XDebug est installé. Pour l'activer il suffit de mettre son IDE en écoute sur le port 9003 ("Start Debugging"), et de donner l'ordre à symfony de se mettre en mode débogage. Pour ce faire 2 solutions :
 
-- Temporaire : pour chaque requête, inclure le paramètre `?XDEBUG_SESSION=VSCODE` dans l'URL ou dans le header.
-- Permanente : Pour que le mode débogage persiste sur plusieurs requêtes :
-  - Activation :
-    - via la console du navigateur : `document.cookie = "XDEBUG_SESSION=VSCODE";`.
-    - via un parametre d'url ou header `?XDEBUG_SESSION_START=1`
-  - Désactivation :
-    - via la console du navigateur : `document.cookie = "XDEBUG_SESSION; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";`.
-    - via un paramètre d'url ou header `XDEBUG_SESSION_STOP=1`
+-   Temporaire : pour chaque requête, inclure le paramètre `?XDEBUG_SESSION=VSCODE` dans l'URL ou dans le header.
+-   Permanente : Pour que le mode débogage persiste sur plusieurs requêtes :
+    -   Activation :
+        -   via la console du navigateur : `document.cookie = "XDEBUG_SESSION=VSCODE";`.
+        -   via un parametre d'url ou header `?XDEBUG_SESSION_START=1`
+    -   Désactivation :
+        -   via la console du navigateur : `document.cookie = "XDEBUG_SESSION; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";`.
+        -   via un paramètre d'url ou header `XDEBUG_SESSION_STOP=1`
 
 # Base de données
 

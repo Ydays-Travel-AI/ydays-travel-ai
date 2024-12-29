@@ -1,4 +1,3 @@
-name: ${PROJECT_NAME}-dev
 services:
   symfony:
     volumes:
@@ -17,14 +16,13 @@ services:
   symfony-dev:
     build:
       context: /symfony
-      target: dev
+      target: devcontainer
       args:
         PHP_VERSION: ${PHP_VERSION}
     volumes:
       - .:/workspace
       - symfony-var:/workspace/var
       - symfony-vendor:/workspace/vendor
-    command: sleep infinity
 
   phpmyadmin:
     environment:
