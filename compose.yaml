@@ -2,7 +2,7 @@ name: ${PROJECT_NAME}-${APP_ENV}
 services:
   symfony:
     build:
-      context: /symfony
+      context: .
       args:
         PHP_VERSION: ${PHP_VERSION}
       target: ${APP_ENV}

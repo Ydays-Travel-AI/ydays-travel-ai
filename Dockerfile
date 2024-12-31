@@ -88,8 +88,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     zip \
     mbstring
     
-
-COPY --chown=www-data:www-data . .
+COPY --chown=www-data:www-data ./symfony .
+COPY --chown=www-data:www-data ./.env .
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
 
@@ -108,5 +108,6 @@ USER www-data
 
 EXPOSE 8000
 
-# Required on CMD to have access to .env file
-CMD ["sh", "-c", "composer install --no-dev --optimize-autoloader && php bin/console cache:warmup --env=prod && apache2-foreground"]
+# Needs .env
+RUN composer install --no-dev --optimize-autoloader && \
+    php bin/console cache:warmup --env=prod

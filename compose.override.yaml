@@ -15,7 +15,7 @@ services:
   #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
   symfony-dev:
     build:
-      context: /symfony
+      context: .
       target: devcontainer
       args:
         PHP_VERSION: ${PHP_VERSION}
