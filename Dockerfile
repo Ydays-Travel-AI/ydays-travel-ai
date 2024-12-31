@@ -2,7 +2,7 @@
 #                                  DEVELOPMENT                                 #
 # ---------------------------------------------------------------------------- #
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-cli as dev-base
+FROM php:${PHP_VERSION}-cli AS dev-base
 
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
@@ -28,7 +28,6 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     mbstring \
     xdebug
 
-
 # ------------------------------- DEV CONTAINER ------------------------------ #
 FROM dev-base AS devcontainer
 RUN apt-get update &&\
@@ -36,7 +35,9 @@ RUN apt-get update &&\
     git \
     npm
 
-CMD ["sleep infinity"]
+WORKDIR /workspace
+
+CMD ["sleep", "infinity"]
 # ------------------------------ DEV CODE RUNNER ----------------------------- #
 FROM dev-base AS dev
 # CLI symfony
@@ -51,8 +52,13 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
     
 EXPOSE 8000
 
-# TODO corriger le processus 
-CMD ["sh","-c", "composer install && symfony server:start --no-tls --allow-all-ip"]
+WORKDIR /var/www
+
+CMD ["sh","-c", "\
+    ./generate-app-secret.sh &&\
+    composer install &&\
+    symfony server:start --no-tls --allow-all-ip\
+"]
 
 
 
@@ -60,7 +66,7 @@ CMD ["sh","-c", "composer install && symfony server:start --no-tls --allow-all-i
 #                                  PRODUCTION                                  #
 # ---------------------------------------------------------------------------- #
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-apache as prod
+FROM php:${PHP_VERSION}-apache AS prod
 
 WORKDIR /var/www
 
@@ -103,8 +109,6 @@ RUN sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf && \
     # a2ensite default-ssl.conf
     
 USER www-data
-
-# todo générer un APP_SECRET (impossible sans composer install < .env dans l'image)
 
 EXPOSE 8000
 

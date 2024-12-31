@@ -7,9 +7,17 @@ Le but de cette application est d'organiser des voyages de A à Z, notamment ave
 
 # Installation
 
-Aller dans le dossier `symfony/`.
-Créer un fichier `.env.local` avec APP_SECRET.
 Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / prod).
+
+## En production
+
+Tout le projet est inclus dans le container docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
+
+Créer les containers (--build pour re constuire l'image avec les nouveaux fichiers) : `docker compose -f compose.yaml up -d --build`.
+
+Une application en production a besoins d'un APP_SECRET unique (notament pour les tokens). Pour le générer la première fois, on peut executer le script `generate-app-secret.sh`.
+
+## En développement
 
 Pour développer sur Symfony, 2 possibilitées:
 
@@ -18,14 +26,6 @@ Pour développer sur Symfony, 2 possibilitées:
     -   Sur VSCode : Extension "Remote Development" :
         -   "Open foler in container" (`CTRL+SHIFT+P`). Lecture du fichier devcontainer.json et lancement des container et des extensions automatiquement.
         -   "Attach to running container" (`CTRL+SHIFT+P`). Simple entrée dans un container en cours, sans toucher à la configuration du VSCode.
-
-## En production
-
-Tout le projet est inclus dans le container docker mais les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
-
-Créer les containers (--build pour recopier les nouveaux fichiers) : `docker compose -f compose.yaml up -d --build`
-
-## En développement
 
 `docker compose up -d --build` : créé les containers (utilise compose et compose.override).
 
