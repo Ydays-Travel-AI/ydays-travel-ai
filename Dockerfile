@@ -57,6 +57,7 @@ WORKDIR /var/www
 CMD ["sh","-c", "\
     ./generate-app-secret.sh &&\
     composer install &&\
+    rm -rf ~/.symfony5/var/* &&\
     symfony server:start --no-tls --allow-all-ip\
 "]
 

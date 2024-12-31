@@ -21,8 +21,8 @@ services:
         PHP_VERSION: ${PHP_VERSION}
     volumes:
       - .:/workspace
-      - symfony-var:/workspace/var
-      - symfony-vendor:/workspace/vendor
+      - symfony-var:/workspace/symfony/var
+      - symfony-vendor:/workspace/symfony/vendor
 
   phpmyadmin:
     environment:
