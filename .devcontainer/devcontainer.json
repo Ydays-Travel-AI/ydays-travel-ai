@@ -1,0 +1,41 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
+{
+    "name": "DevContainer Connection",
+    "service": "symfony-dev",
+    "dockerComposeFile": ["./../compose.yaml", "./../compose.override.yaml"],
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // DEV
+                "bmewburn.vscode-intelephense-client",
+                "github.copilot",
+                "xdebug.php-debug",
+
+                // CI
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                "junstyle.php-cs-fixer",
+                "esbenp.prettier-vscode",
+
+                // Markdown
+                "shd101wyy.markdown-preview-enhanced",
+                "davidanson.vscode-markdownlint",
+                "valentjn.vscode-ltex"
+            ]
+        },
+        "settings": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "[php]": {
+                "editor.defaultFormatter": "junstyle.php-cs-fixer" // Formatter uniquement pour PHP
+            },
+            "editor.formatOnSave": true,
+            "php-cs-fixer.executablePath": "${workspaceFolder}/symfony/vendor/bin/php-cs-fixer",
+            "php-cs-fixer.config": "/var/www/symfony/.php-cs-fixer.dist.php",
+            "ltex.language": "fr",
+            "files.encoding": "utf8",
+            "editor.detectIndentation": true
+        }
+    }
+}
