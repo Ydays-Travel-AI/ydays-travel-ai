@@ -18,6 +18,7 @@
                 "eamodio.gitlens",
                 "junstyle.php-cs-fixer",
                 "esbenp.prettier-vscode",
+                "sanderronde.phpstan-vscode",
 
                 // Markdown
                 "shd101wyy.markdown-preview-enhanced",
