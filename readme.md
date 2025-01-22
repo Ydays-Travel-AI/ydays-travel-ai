@@ -13,7 +13,7 @@ Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / 
 
 Tout le projet est inclus dans le container docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
-Créer les containers (--build pour re constuire l'image avec les nouveaux fichiers) : `docker compose -f compose.yaml up -d --build`.
+Créer les containers (--build pour re constuire l'image avec les nouveaux fichiers) : `docker compose -f compose.yaml -f compose.prod.yaml up -d --build`.
 
 Une application en production a besoins d'un APP_SECRET unique (notament pour les tokens). Pour le générer la première fois, on peut executer le script `generate-app-secret.sh`.
 
