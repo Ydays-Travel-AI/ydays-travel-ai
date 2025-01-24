@@ -38,6 +38,7 @@ RUN apt-get update &&\
 WORKDIR /workspace
 
 CMD ["sleep", "infinity"]
+
 # ------------------------------ DEV CODE RUNNER ----------------------------- #
 FROM dev-base AS dev
 # CLI symfony
@@ -54,14 +55,7 @@ EXPOSE 8000
 
 WORKDIR /var/www
 
-CMD ["sh","-c", "\
-    ./generate-app-secret.sh &&\
-    composer install &&\
-    rm -rf ~/.symfony5/var/* &&\
-    symfony server:start --no-tls --allow-all-ip\
-"]
-
-
+CMD ["sleep", "infinity"]
 
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
@@ -95,8 +89,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     zip \
     mbstring
     
-COPY --chown=www-data:www-data ./symfony .
-COPY --chown=www-data:www-data ./.env .
+COPY --chown=www-data:www-data . .
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
 
@@ -115,4 +108,5 @@ EXPOSE 8000
 
 # Needs .env
 RUN composer install --no-dev --optimize-autoloader && \
-    php bin/console cache:warmup --env=prod
+    php bin/console cache:warmup --env=prod && \
+    composer dump-env prod
