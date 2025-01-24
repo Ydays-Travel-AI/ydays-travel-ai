@@ -73,6 +73,8 @@ L'extension VSCode "junstyle.php-cs-fixer" est paramétrée dans le devcontainer
 
 Sinon, on peut formater les fichiers manuellement grâce à `composer format`. Si l'extension n'est pas installée, il est préférable de l'executer avant chaque commit, ou à minima avant un merge.
 
+"Prettier" permet de formatter les autres fichiers. Sois via l'extension VSCode installé dans le conteneur de dev, sois via la commande `npx prettier --write .`.
+
 ### Linter
 
 PHPStan est un outil d’analyse statique pour le code PHP. Il aide à détecter des bugs ou des incohérences dans le code avant même de l’exécuter.
