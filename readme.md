@@ -13,9 +13,18 @@ Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / 
 
 Tout le projet est inclus dans le container docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
-Créer les containers (--build pour re constuire l'image avec les nouveaux fichiers) : `docker compose -f compose.yaml up -d --build`.
+Créer les containers (--build obligatoire pour re constuire l'image avec les nouveaux fichiers) :
 
-Une application en production a besoins d'un APP_SECRET unique (notament pour les tokens). Pour le générer la première fois, on peut executer le script `generate-app-secret.sh`.
+```bash
+docker compose \
+-f compose.yaml \
+-f compose.prod.yaml \
+up \
+-d \
+--build
+```
+
+Une application en production a besoins d'un APP_SECRET unique (notament pour les tokens). Il se génère automatiquement grâce au script `generate-app-secret.sh`.
 
 ## En développement
 
@@ -27,7 +36,14 @@ Pour développer sur Symfony, 2 possibilitées:
         -   "Open foler in container" (`CTRL+SHIFT+P`). Lecture du fichier devcontainer.json et lancement des container et des extensions automatiquement.
         -   "Attach to running container" (`CTRL+SHIFT+P`). Simple entrée dans un container en cours, sans toucher à la configuration du VSCode.
 
-`docker compose up -d --build` : créé les containers (utilise compose et compose.override).
+Créer les containers (utilise compose et compose.override) :
+
+```bash
+docker compose \
+up \
+-d \
+--build
+```
 
 ### Latence liée à la synchronisation (sur Windows)
 
@@ -51,11 +67,19 @@ Puisque nous développons en windows, nous avons décidé d'isoler `/vendor`.
 
 ### Formatage
 
-En développement, la librairie php-cs-formatter permet de formater les fichiers PHP, afin d'avoir une nomenclature uniforme sur le dépôt.
+La librairie php-cs-formatter permet de formater les fichiers PHP, afin d'avoir une nomenclature uniforme sur le dépôt.
 
 L'extension VSCode "junstyle.php-cs-fixer" est paramétrée dans le devcontainer. Elle formate les fichiers dès qu'on sauvegarde, en utilisant la configuration dans le fichier `.php-cs-fixer.dist.php`.
 
-Sinon, on peut formater les fichiers manuellement grâce à `composer format`. Ce script est par ailleurs exécuté à chaque commit.
+Sinon, on peut formater les fichiers manuellement grâce à `composer format`. Si l'extension n'est pas installée, il est préférable de l'executer avant chaque commit, ou à minima avant un merge.
+
+### Linter
+
+PHPStan est un outil d’analyse statique pour le code PHP. Il aide à détecter des bugs ou des incohérences dans le code avant même de l’exécuter.
+
+L’extension VSCode “PHPStan” est configurée dans le devcontainer pour analyser le code à la volée. Elle utilise les paramètres définis dans le fichier phpstan.neon.
+
+Pour exécuter une analyse manuellement, on peut utiliser la commande `composer lint`.
 
 ### Débogage
 

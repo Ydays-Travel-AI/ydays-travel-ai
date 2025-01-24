@@ -4,6 +4,16 @@ services:
       - ./symfony:/var/www
       - symfony-var:/var/www/var
       - symfony-vendor:/var/www/vendor
+    command: [
+        'sh',
+        '-c',
+        "\
+        ./generate-app-secret.sh &&\
+        composer install &&\
+        rm -rf ~/.symfony5/var/* &&\
+        symfony server:start --no-tls --allow-all-ip\
+        ",
+      ]
 
   # mailer:
   #     image: axllent/mailpit
@@ -15,7 +25,7 @@ services:
   #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
   symfony-dev:
     build:
-      context: .
+      context: ./symfony
       target: devcontainer
       args:
         PHP_VERSION: ${PHP_VERSION}

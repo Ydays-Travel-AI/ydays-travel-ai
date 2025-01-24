@@ -1,15 +1,15 @@
 doctrine:
   dbal:
-    driver: "pdo_mysql"
+    driver: 'pdo_mysql'
     user: admin
-    password: "%env(resolve:DATABASE_ADMIN_PASSWORD)%"
-    host: "mysql"
-    port: "%env(resolve:DATABASE_PORT)%"
-    dbname: "%env(resolve:PROJECT_NAME)%"
+    password: '%env(resolve:DATABASE_ADMIN_PASSWORD)%'
+    host: 'mysql'
+    port: '3306'
+    dbname: '%env(resolve:PROJECT_NAME)%'
 
-    server_version: "%env(resolve:MYSQL_VERSION)%"
-    charset: "utf8mb4"
-    profiling_collect_backtrace: "%kernel.debug%"
+    server_version: '%env(resolve:MYSQL_VERSION)%'
+    charset: 'utf8mb4'
+    profiling_collect_backtrace: '%kernel.debug%'
     use_savepoints: true
   orm:
     auto_generate_proxy_classes: true
@@ -24,7 +24,7 @@ doctrine:
       App:
         type: attribute
         is_bundle: false
-        dir: "%kernel.project_dir%/src/Entity"
+        dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
     controller_resolver:
@@ -34,13 +34,13 @@ when@test:
   doctrine:
     dbal:
       # "TEST_TOKEN" is typically set by ParaTest
-      dbname_suffix: "_test%env(default::TEST_TOKEN)%"
+      dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
 when@prod:
   doctrine:
     orm:
       auto_generate_proxy_classes: false
-      proxy_dir: "%kernel.build_dir%/doctrine/orm/Proxies"
+      proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
       query_cache_driver:
         type: pool
         pool: doctrine.system_cache_pool
