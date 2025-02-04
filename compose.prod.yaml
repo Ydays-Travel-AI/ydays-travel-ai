@@ -1,3 +1,8 @@
 services:
   symfony:
     restart: always
+  angular:
+    build:
+      context: ./angular
+    ports:
+      - '80:4000'

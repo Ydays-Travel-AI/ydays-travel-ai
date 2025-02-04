@@ -1,10 +1,14 @@
-FROM node:18.20.4
-
-RUN mkdir /angular
-WORKDIR /angular
+FROM node:20-alpine AS builder
+WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install
-RUN npm install -g @angular/cli@17.3.1
+RUN npm ci --legacy-peer-deps 
 COPY . .
-EXPOSE 4200
-CMD [ "ng", "serve", "--host", "0.0.0.0" ]
+RUN npm run build --configuration=production
+
+FROM builder as final-stage
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json .
+EXPOSE 4000
+CMD ["node", "./dist/next-step/server/server.mjs"]
