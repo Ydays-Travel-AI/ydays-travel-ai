@@ -55,8 +55,10 @@ EXPOSE 8000
 
 WORKDIR /var/www
 
-CMD ["sleep", "infinity"]
-
+CMD ["sh", "-c", "./generate-app-secret.sh &&\
+    composer install &&\
+    rm -rf ~/.symfony5/var/* &&\
+    symfony server:start --no-tls --allow-all-ip"]
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
 # ---------------------------------------------------------------------------- #
@@ -107,6 +109,8 @@ USER www-data
 EXPOSE 8000
 
 # Needs .env
-RUN composer install --no-dev --optimize-autoloader && \
-    php bin/console cache:warmup --env=prod && \
-    composer dump-env prod
+CMD ["sh", "-c", "./generate-app-secret.sh &&\
+    composer install --no-dev --optimize-autoloader &&\
+    php bin/console cache:warmup --env=prod &&\
+    composer dump-env prod &&\
+    apachectl -D FOREGROUND"] 

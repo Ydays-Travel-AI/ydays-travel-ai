@@ -18,7 +18,6 @@ Créer les containers (--build obligatoire pour re constuire l'image avec les no
 ```bash
 docker compose \
 -f compose.yaml \
--f compose.prod.yaml \
 up \
 -d \
 --build
@@ -100,7 +99,7 @@ Pour développer, XDebug est installé. Pour l'activer il suffit de mettre son I
 
 ## Sans migration
 
-En production on privilégie les migrations. Pour une simple synchronisation de la structure de la BDD avec les modèles, il suffit d'exécuter `php bin/console doctrine:schema:update`.
+En production on privilégie les migrations. Pour une simple synchronisation de la structure de la BDD avec les modèles, il suffit d'exécuter `php bin/console doctrine:schema:update --force` dans le container symfony.
 
 ## Avec migration
 
