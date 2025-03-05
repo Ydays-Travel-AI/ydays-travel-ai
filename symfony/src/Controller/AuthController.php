@@ -18,14 +18,6 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AuthController extends AbstractController
 {
-    #[Route('/public', name: 'api_public', methods: ['GET'])]
-    public function publicEndpoint(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Bienvenue sur l\'API publique',
-        ]);
-    }
-
     #[Route('/secured', name: 'api_secured', methods: ['GET'])]
     public function securedEndpoint(): JsonResponse
     {
