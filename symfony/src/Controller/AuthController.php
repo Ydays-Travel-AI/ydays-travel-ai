@@ -74,16 +74,4 @@ class AuthController extends AbstractController
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-    #[Route('/me', name: 'api_me', methods: ['GET'])]
-    public function me(): JsonResponse
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        
-        return $this->json([
-            'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
-        ]);
-    }
 }
