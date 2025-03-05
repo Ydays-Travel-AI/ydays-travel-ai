@@ -15,3 +15,6 @@
 ###< friendsofphp/php-cs-fixer ###
 
 .composer
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
