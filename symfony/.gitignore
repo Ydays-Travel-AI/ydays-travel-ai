@@ -15,6 +15,3 @@
 ###< friendsofphp/php-cs-fixer ###
 
 .composer
-###> phpstan/phpstan ###
-phpstan.neon
-###< phpstan/phpstan ###
