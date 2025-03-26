@@ -29,10 +29,10 @@ Une application en production a besoins d'un APP_SECRET unique (notament pour le
 
 Pour développer sur symfony, 2 possibilités :
 
--   Développer en local : l'installation en local de PHP et composer sont nécessaires. Fortement déconseillé sur Windows (lire le paragraphe suivant pour comprendre)
--   Container de développement sur VSCode via l'extension "Remote Development" :
-    -   "Open folder in container" : mise en place complète et automatique de l'environnement de développement (extensions, paramètres...) grâce au fichier `devcontainer.json`
-    -   "Attach to running container" : le développement se fait dans le container sélectionné, mais aucune configuration VSCode n'est prise en compte.
+- Développer en local : l'installation en local de PHP et composer sont nécessaires. Fortement déconseillé sur Windows (lire le paragraphe suivant pour comprendre)
+- Container de développement sur VSCode via l'extension "Remote Development" :
+  - "Open folder in container" : mise en place complète et automatique de l'environnement de développement (extensions, paramètres...) grâce au fichier `devcontainer.json`
+  - "Attach to running container" : le développement se fait dans le container sélectionné, mais aucune configuration VSCode n'est prise en compte.
 
 Créer les containers (utilise compose et compose.override) :
 
@@ -54,8 +54,8 @@ Pour éviter cette forte latence (60ms passent à 1500ms), `var/` et `/vendor` n
 
 Cependant, `/vendor` est necessaire pour utiliser les librairies lors du développement. Il doit être présent dans l'environnement de dev. Pour ce faire, 2 solutions :
 
--   **Dans le devcontainer** : le dossier `/var` et `/vendor` du container sont accessibles dans le devcontainer mais pas par l'hôte.
--   **En local** : le dossier `/vendor` est en doublon dans l'hôte et le container, obligeant à le synchroniser manuellement à chaque installation ou mise à jour de dépendances en local, via `composer install` dans le container.
+- **Dans le devcontainer** : le dossier `/var` et `/vendor` du container sont accessibles dans le devcontainer mais pas par l'hôte.
+- **En local** : le dossier `/vendor` est en doublon dans l'hôte et le container, obligeant à le synchroniser manuellement à chaque installation ou mise à jour de dépendances en local, via `composer install` dans le container.
 
 #### Formatage
 
@@ -81,10 +81,10 @@ Pour développer, XDebug est installé dans le container PHP. L'extension "PHP D
 
 Pour l'utiliser, il faut il suffit de mettre son IDE en écoute sur le port 9003 ("Start Debugging"), et de donner l'ordre à symfony de se mettre en mode débogage. Pour ce faire, inclure le paramètre suivant dans l'URL ou dans le header :
 
--   Temporaire : (pour chaque requête) `XDEBUG_SESSION=VSCODE`.
--   Permanente (pour que le mode débogage persiste sur plusieurs requêtes) :
-    -   Activation : `?XDEBUG_SESSION_START=1`
-    -   Désactivation : `XDEBUG_SESSION_STOP=1`
+- Temporaire : (pour chaque requête) `XDEBUG_SESSION=VSCODE`.
+- Permanente (pour que le mode débogage persiste sur plusieurs requêtes) :
+  - Activation : `?XDEBUG_SESSION_START=1`
+  - Désactivation : `XDEBUG_SESSION_STOP=1`
 
 ## Base de données
 
