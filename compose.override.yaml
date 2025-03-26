@@ -23,6 +23,11 @@ services:
       - .:/workspace
       - symfony-var:/workspace/symfony/var
       - symfony-vendor:/workspace/symfony/vendor
+    environment: # Vars used both by Docker and Symfony
+      APP_ENV: ${APP_ENV}
+      PROJECT_NAME: ${PROJECT_NAME}
+      MYSQL_VERSION: ${MYSQL_VERSION}
+      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
 
   phpmyadmin:
     environment:
