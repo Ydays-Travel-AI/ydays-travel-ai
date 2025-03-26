@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Service\ValidationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,11 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AuthController extends AbstractController
 {
+    public function __construct(
+        private ValidationService $validationService
+    ) {
+    }
+
     #[Route('/login', name: 'api_login', methods: ['POST'])]
     public function login(): JsonResponse
     {
@@ -35,15 +41,33 @@ class AuthController extends AbstractController
         UserRepository $userRepository
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+        $email = $data['email'] ?? '';
+        $password = $data['password'] ?? '';
 
-        if (empty($data['email']) || empty($data['password'])) {
+        if (empty($email) || empty($password)) {
             return $this->json([
                 'message' => 'Email et mot de passe requis',
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        // Validation de l'email
+        if (!$this->validationService->isValidEmail($email)) {
+            return $this->json([
+                'message' => 'Email invalide',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Validation du mot de passe
+        $passwordErrors = $this->validationService->isValidPassword($password);
+        if (!empty($passwordErrors)) {
+            return $this->json([
+                'message' => 'Le mot de passe ne respecte pas les critères de sécurité',
+                'errors' => $passwordErrors,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         // Vérifier si l'email existe déjà
-        $existingUser = $userRepository->findOneBy(['email' => $data['email']]);
+        $existingUser = $userRepository->findOneBy(['email' => $email]);
         if ($existingUser) {
             return $this->json([
                 'message' => 'Cet email est déjà utilisé',
@@ -52,8 +76,8 @@ class AuthController extends AbstractController
 
         try {
             $user = new User();
-            $user->setEmail($data['email']);
-            $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
+            $user->setEmail($email);
+            $user->setPassword($passwordHasher->hashPassword($user, $password));
             $user->setRoles(['ROLE_USER']);
 
             $entityManager->persist($user);

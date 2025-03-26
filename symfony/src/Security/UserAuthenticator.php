@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Repository\UserRepository;
+use App\Service\ValidationService;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +24,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 class UserAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private ValidationService $validationService,
+        private JWTTokenManagerInterface $jwtManager
     ) {
     }
 
@@ -43,7 +47,11 @@ class UserAuthenticator extends AbstractAuthenticator
         $password = $data['password'] ?? '';
 
         if (empty($email) || empty($password)) {
-            throw new CustomUserMessageAuthenticationException('Email ou mot de passe manquant');
+            throw new CustomUserMessageAuthenticationException('Email et mot de passe requis');
+        }
+
+        if (!$this->validationService->isValidEmail($email)) {
+            throw new CustomUserMessageAuthenticationException('Email invalide');
         }
 
         return new Passport(
@@ -54,14 +62,20 @@ class UserAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // on success, let the request continue
+        if ($firewallName === 'login') {
+            $jwt = $this->jwtManager->create($token->getUser());
+            return new JsonResponse([
+                'message' => 'Authentification réussie',
+                'token' => $jwt
+            ]);
+        }
         return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
+            'message' => $exception->getMessage(),
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
