@@ -29,10 +29,18 @@ class ValidationService
             $errors[] = 'Le mot de passe doit contenir au moins une majuscule';
         }
 
+        if (!preg_match('/[a-z]/', $password)) {
+            $errors[] = 'Le mot de passe doit contenir au moins une minuscule';
+        }
+
+        if (!preg_match('/[!@#$%^&*(),.?":{}|<>_\-\\[\];\'/+=`~]/', $password)) {
+            $errors[] = 'Le mot de passe doit contenir au moins un caractère spécial';
+        }
+
         if (!preg_match('/[0-9]/', $password)) {
             $errors[] = 'Le mot de passe doit contenir au moins un chiffre';
         }
 
         return $errors;
     }
-} 
+}

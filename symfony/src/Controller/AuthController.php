@@ -41,8 +41,8 @@ class AuthController extends AbstractController
         UserRepository $userRepository
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
-        $email = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
+        $email = $data['email'];
+        $password = $data['password'];
 
         if (empty($email) || empty($password)) {
             return $this->json([
