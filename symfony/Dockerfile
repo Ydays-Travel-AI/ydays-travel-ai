@@ -2,7 +2,7 @@
 #                                  DEVELOPMENT                                 #
 # ---------------------------------------------------------------------------- #
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-cli AS dev-base
+FROM php:${PHP_VERSION}-cli AS dev
 
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
@@ -28,19 +28,12 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     mbstring \
     xdebug
 
-# ------------------------------- DEV CONTAINER ------------------------------ #
-FROM dev-base AS devcontainer
+# Dev tools
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
     git \
     npm
 
-WORKDIR /workspace
-
-CMD ["sleep", "infinity"]
-
-# ------------------------------ DEV CODE RUNNER ----------------------------- #
-FROM dev-base AS dev
 # CLI symfony
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
@@ -53,7 +46,7 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
     
 EXPOSE 8000
 
-WORKDIR /var/www
+WORKDIR /var/www/symfony
 
 CMD ["sh", "-c", "./generate-app-secret.sh &&\
     composer install &&\

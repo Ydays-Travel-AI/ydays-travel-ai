@@ -1,34 +1,12 @@
 services:
   symfony:
     volumes:
-      - ./symfony:/var/www
-      - symfony-var:/var/www/var
-      - symfony-vendor:/var/www/vendor
-
-  # mailer:
-  #     image: axllent/mailpit
-  #     ports:
-  #         - "1025"
-  #         - "8025"
-  #     environment:
-  #         MP_SMTP_AUTH_ACCEPT_ANY: 1
-  #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
-  symfony-dev:
-    build:
-      context: ./symfony
-      target: devcontainer
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-    volumes:
-      - .:/workspace
-      - symfony-var:/workspace/symfony/var
-      - symfony-vendor:/workspace/symfony/vendor
-    environment: # Vars used both by Docker and Symfony
-      APP_ENV: ${APP_ENV}
-      PROJECT_NAME: ${PROJECT_NAME}
-      MYSQL_VERSION: ${MYSQL_VERSION}
-      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
-
+      - ./:/var/www/
+      - symfony-var:/var/www/symfony/var
+      - symfony-vendor:/var/www/symfony/vendor
+      - /var/www/angular/node_modules
+      - /var/www/angular/dist
+      - /var/www/angular/.angular
   phpmyadmin:
     environment:
       PMA_USER: root
