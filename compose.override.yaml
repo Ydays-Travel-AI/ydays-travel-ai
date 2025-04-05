@@ -5,11 +5,7 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION}
       target: php-symfony
-    environment: # Vars used both by Docker and Symfony
-      APP_ENV: ${APP_ENV}
-      PROJECT_NAME: ${PROJECT_NAME}
-      MYSQL_VERSION: ${MYSQL_VERSION}
-      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
+    env_file: .env # Vars used both by Docker and Symfony
     volumes:
       - ./:/var/www/
       - symfony-var:/var/www/symfony/var

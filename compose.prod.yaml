@@ -14,11 +14,7 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION}
       target: php-fpm
-    environment: # Vars used both by Docker and Symfony
-      APP_ENV: ${APP_ENV}
-      PROJECT_NAME: ${PROJECT_NAME}
-      MYSQL_VERSION: ${MYSQL_VERSION}
-      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
+    env_file: .env # Vars used both by Docker and Symfony
     restart: always
     healthcheck:
       test: ['CMD-SHELL', 'pidof php-fpm > /dev/null || exit 1']
