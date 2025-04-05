@@ -61,7 +61,7 @@ EXPOSE 8000
 
 WORKDIR /var/www/symfony
 
-CMD ["sh", "-c", "./generate-app-secret.sh &&\
+ENTRYPOINT ["sh", "-c", "./generate-app-secret.sh &&\
     composer install &&\
     rm -rf ~/.symfony5/var/* &&\
     symfony server:start --no-tls --allow-all-ip"]
@@ -71,8 +71,6 @@ CMD ["sh", "-c", "./generate-app-secret.sh &&\
 FROM php:${PHP_VERSION}-fpm AS php-fpm
 ARG SYMFONY_CLI_URL
 ARG PHP_EXT_INSTALLER_URL
-
-WORKDIR /app
 
 # hadolint ignore=DL3008
 RUN apt-get update &&\
@@ -99,6 +97,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     zip \
     mbstring
     
+WORKDIR /app
+
 COPY --chown=www-data:www-data . .
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
@@ -108,7 +108,7 @@ USER www-data
 EXPOSE 9000
 
 # Needs .env
-CMD ["sh", "-c", "./generate-app-secret.sh &&\
+ENTRYPOINT ["sh", "-c", "./generate-app-secret.sh &&\
     composer install --no-dev --optimize-autoloader &&\
     php bin/console cache:warmup --env=prod &&\
     composer dump-env prod &&\

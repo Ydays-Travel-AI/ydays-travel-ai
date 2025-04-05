@@ -2,11 +2,7 @@ services:
   symfony:
     build:
       context: ./symfony
-      target: nginx
-    image:
-    volumes:
-      - ./symfony/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
-      - ./symfony:/app
+      dockerfile: Dockerfile.nginx
     restart: always
     depends_on:
       php-fpm:
@@ -25,10 +21,11 @@ services:
       DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
     restart: always
     healthcheck:
-      test: ['CMD-SHELL', 'pidof php-fpm > /dev/null || exit 1']
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      test: ['CMD-SHELL', 'pgrep php-fpm > /dev/null || exit 1']
+      interval: 5s
+      timeout: 3s
+      retries: 2
+      start_period: 5s
     depends_on:
       mysql:
         condition: service_healthy
