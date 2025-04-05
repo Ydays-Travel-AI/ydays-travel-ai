@@ -1,5 +1,15 @@
 services:
   symfony:
+    build:
+      context: ./symfony
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+      target: php-symfony
+    environment: # Vars used both by Docker and Symfony
+      APP_ENV: ${APP_ENV}
+      PROJECT_NAME: ${PROJECT_NAME}
+      MYSQL_VERSION: ${MYSQL_VERSION}
+      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
     volumes:
       - ./:/var/www/
       - symfony-var:/var/www/symfony/var
@@ -7,6 +17,7 @@ services:
       - /var/www/angular/node_modules
       - /var/www/angular/dist
       - /var/www/angular/.angular
+
   phpmyadmin:
     environment:
       PMA_USER: root

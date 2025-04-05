@@ -1,22 +1,11 @@
 name: ${PROJECT_NAME}-${APP_ENV}
 services:
-  symfony:
-    build:
-      context: ./symfony
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-      target: ${APP_ENV}
-    environment: # Vars used both by Docker and Symfony
-      APP_ENV: ${APP_ENV}
-      PROJECT_NAME: ${PROJECT_NAME}
-      MYSQL_VERSION: ${MYSQL_VERSION}
-      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
+  symfony: # Either Symfony CLI or Nginx
     ports:
       - 8000:8000
     depends_on:
       mysql:
         condition: service_healthy
-    restart: always
 
   mysql:
     image: mysql:${MYSQL_VERSION}

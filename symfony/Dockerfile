@@ -1,14 +1,14 @@
 ARG PHP_VERSION
 ARG SYMFONY_CLI_URL=https://get.symfony.com/cli/installer
 ARG PHP_EXT_INSTALLER_URL=https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions
-
 ARG COMPOSER_VERSION=latest
+
 FROM composer:${COMPOSER_VERSION} AS composer
 
 # ---------------------------------------------------------------------------- #
 #                                  DEVELOPMENT                                 #
 # ---------------------------------------------------------------------------- #
-FROM php:${PHP_VERSION}-cli AS dev
+FROM php:${PHP_VERSION}-cli AS php-symfony
 ARG SYMFONY_CLI_URL
 ARG PHP_EXT_INSTALLER_URL
 
@@ -68,11 +68,11 @@ CMD ["sh", "-c", "./generate-app-secret.sh &&\
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
 # ---------------------------------------------------------------------------- #
-FROM php:${PHP_VERSION}-apache AS prod
+FROM php:${PHP_VERSION}-fpm AS php-fpm
 ARG SYMFONY_CLI_URL
 ARG PHP_EXT_INSTALLER_URL
 
-WORKDIR /var/www
+WORKDIR /app
 
 # hadolint ignore=DL3008
 RUN apt-get update &&\
@@ -102,23 +102,14 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
 COPY --chown=www-data:www-data . .
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
-
-# Apache configuration
-RUN sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf && \
-    echo "LogLevel warn" >> /etc/apache2/apache2.conf &&\
-    echo "ServerName localhost" >> /etc/apache2/apache2.conf &&\
-    a2dissite 000-default &&\
-    mv apache.conf /etc/apache2/sites-available/symfony.conf &&\
-    a2ensite symfony
-    # a2ensite default-ssl.conf
     
 USER www-data
 
-EXPOSE 8000
+EXPOSE 9000
 
 # Needs .env
 CMD ["sh", "-c", "./generate-app-secret.sh &&\
     composer install --no-dev --optimize-autoloader &&\
     php bin/console cache:warmup --env=prod &&\
     composer dump-env prod &&\
-    apachectl -D FOREGROUND"]
+    php-fpm"]

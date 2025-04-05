@@ -1,0 +1,40 @@
+services:
+  symfony:
+    build:
+      context: ./symfony
+      target: nginx
+    image:
+    volumes:
+      - ./symfony/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ./symfony:/app
+    restart: always
+    depends_on:
+      php-fpm:
+        condition: service_healthy
+
+  php-fpm:
+    build:
+      context: ./symfony
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+      target: php-fpm
+    environment: # Vars used both by Docker and Symfony
+      APP_ENV: ${APP_ENV}
+      PROJECT_NAME: ${PROJECT_NAME}
+      MYSQL_VERSION: ${MYSQL_VERSION}
+      DATABASE_ADMIN_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pidof php-fpm > /dev/null || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    restart: always
+
+  phpmyadmin:
+    restart: always
