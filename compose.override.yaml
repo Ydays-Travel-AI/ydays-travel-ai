@@ -6,8 +6,9 @@ services:
         PHP_VERSION: ${PHP_VERSION}
       target: php-symfony
     env_file: .env # Vars used both by Docker and Symfony
+    working_dir: /var/www/symfony
     volumes:
-      - ./:/var/www/
+      - ./:/var/www
       - symfony-var:/var/www/symfony/var
       - symfony-vendor:/var/www/symfony/vendor
       - /var/www/angular/node_modules

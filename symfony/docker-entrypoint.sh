@@ -23,11 +23,8 @@ if [ "$MODE" = "prod" ]; then
 
   echo "📦 Dumping environment variables"
   composer dump-env prod
-
-  echo "🚀 Starting PHP-FPM"
-  exec php-fpm
 else
-  echo "🚀 Starting Symfony server (dev mode)"
   rm -rf ~/.symfony*/var/*
-  exec symfony server:start --no-tls --allow-all-ip
 fi
+
+exec docker-php-entrypoint "$@"

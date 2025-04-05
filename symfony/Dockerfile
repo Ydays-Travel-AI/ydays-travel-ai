@@ -59,10 +59,11 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
     
 EXPOSE 8000
 
-WORKDIR /var/www/symfony
+COPY --chown=www-data:www-data ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ENV MODE=dev
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["symfony","server:start","--no-tls","--allow-all-ip"]
 
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
@@ -106,13 +107,13 @@ ENV HOME=/app
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
 
-
 COPY --chown=www-data:www-data . .
-RUN mv ./docker-entrypoint.sh /
+RUN mv ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
     
 USER www-data
 
 EXPOSE 9000
 
 ENV MODE=prod
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["php-fpm"]
