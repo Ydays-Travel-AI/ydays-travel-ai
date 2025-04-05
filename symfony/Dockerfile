@@ -61,10 +61,9 @@ EXPOSE 8000
 
 WORKDIR /var/www/symfony
 
-ENTRYPOINT ["sh", "-c", "./generate-app-secret.sh &&\
-    composer install &&\
-    rm -rf ~/.symfony5/var/* &&\
-    symfony server:start --no-tls --allow-all-ip"]
+ENV MODE=dev
+ENTRYPOINT ["./docker-entrypoint.sh"]
+
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
 # ---------------------------------------------------------------------------- #
@@ -98,18 +97,17 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     mbstring
     
 WORKDIR /app
-
-COPY --chown=www-data:www-data . .
+ENV HOME=/app
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
+
+
+COPY --chown=www-data:www-data . .
+RUN mv ./docker-entrypoint.sh /
     
 USER www-data
 
 EXPOSE 9000
 
-# Needs .env
-ENTRYPOINT ["sh", "-c", "./generate-app-secret.sh &&\
-    composer install --no-dev --optimize-autoloader &&\
-    php bin/console cache:warmup --env=prod &&\
-    composer dump-env prod &&\
-    php-fpm"]
+ENV MODE=prod
+ENTRYPOINT ["/docker-entrypoint.sh"]
