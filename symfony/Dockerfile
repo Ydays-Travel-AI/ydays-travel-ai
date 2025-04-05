@@ -59,11 +59,13 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
     
 EXPOSE 8000
 
-COPY --chown=www-data:www-data ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+CMD ["/bin/bash", "-c", \
+    "./generate-app-secret.sh && \
+    composer install && \
+    rm -rf ~/.symfony*/var/* && \
+    symfony server:start --no-tls --allow-all-ip"]
 
-ENV MODE=dev
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["symfony","server:start","--no-tls","--allow-all-ip"]
+
 
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
@@ -114,6 +116,6 @@ USER www-data
 
 EXPOSE 9000
 
-ENV MODE=prod
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["php-fpm"]
+RUN composer install --no-dev --optimize-autoloader &&\
+    php bin/console cache:warmup --env=prod &&\
+    composer dump-env prod
