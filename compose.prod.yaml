@@ -10,7 +10,8 @@ services:
 
   php-fpm:
     build:
-      context: ./symfony
+      context: . # Trick to include both .env and symfony/ in the build context
+      dockerfile: ./symfony/Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
       target: php-fpm

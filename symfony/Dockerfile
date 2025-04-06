@@ -60,12 +60,9 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
 EXPOSE 8000
 
 CMD ["/bin/bash", "-c", \
-    "./generate-app-secret.sh && \
-    composer install && \
+    "./symfony-preparation.sh dev && \
     rm -rf ~/.symfony*/var/* && \
     symfony server:start --no-tls --allow-all-ip"]
-
-
 
 # ---------------------------------------------------------------------------- #
 #                                  PRODUCTION                                  #
@@ -109,13 +106,16 @@ ENV HOME=/app
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
 
-COPY --chown=www-data:www-data . .
-RUN mv ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --chown=www-data:www-data symfony .
+
+# Copying the project root .env file
+COPY --chown=www-data:www-data ./.env ./globalenv
+RUN echo >> .env && \
+    cat globalenv >> .env && \
+    rm globalenv
     
 USER www-data
 
 EXPOSE 9000
 
-RUN composer install --no-dev --optimize-autoloader &&\
-    php bin/console cache:warmup --env=prod &&\
-    composer dump-env prod
+RUN ./symfony-preparation.sh prod
