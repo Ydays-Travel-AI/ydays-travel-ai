@@ -1,29 +1,32 @@
-# Description
+# Next Step
+
+## Description
 
 > Ydays
 > Projet dans le cadre de Ynov de développement d'application.
 
 Le but de cette application est d'organiser des voyages de A à Z, notamment avec de l'IA.
 
-# Installation
+## Installation
 
 Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / prod).
 
 ### En production
 
-Tout le projet est inclus dans le container docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
+L'application nécessite un APP_SECRET unique et qui ne change pas entre les builds (notamment pour les tokens). En production, il faut le générer à la main grâce à la commande `prepare-app-secret.sh generate` avant de lancer les services (nécessite PHP en local)
+
+Tout le projet est inclus dans des containers Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
 Créer les containers (--build obligatoire pour reconstruire l'image avec les nouveaux fichiers) :
 
 ```bash
 docker compose \
 -f compose.yaml \
+-f compose.prod.yaml
 up \
 -d \
 --build
 ```
-
-Une application en production a besoins d'un APP_SECRET unique (notament pour les tokens). Il se génère automatiquement grâce au script `generate-app-secret.sh`.
 
 ### En développement
 

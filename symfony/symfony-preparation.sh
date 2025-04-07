@@ -8,23 +8,31 @@ if [ -z "$MODE" ]; then
     exit 1
 fi
 
-# Adds APP_SECRET only if it is missing
-echo "🔐 Generating APP_SECRET (if needed)"
-if ! grep -qsE '^APP_SECRET=.*[^[:space:]]+' .env.local; then
-    SECRET=$(php -r 'echo bin2hex(random_bytes(16));')
-    echo "APP_SECRET=$SECRET" >> .env.local
-    echo "APP_SECRET created in .env.local : $SECRET"
+if [ "$MODE" != "dev" ] && [ "$MODE" != "prod" ]; then
+    echo "❌ Error: MODE must be either 'dev' or 'prod'"
+    exit 1
+fi
+
+if [ "$MODE" = "dev" ]; then
+    echo "🔐 Generating APP_SECRET for dev"
+    ./prepare-app-secret.sh generate
+
+    echo "🔥 Warming up cache"
+    php bin/console cache:warmup --env=dev
+
+    INSTALL_FLAGS=""
 else
-    echo "APP_SECRET already exists in .env.local."
+    echo "🔐 Checking APP_SECRET for prod"
+    ./prepare-app-secret.sh check
+
+    echo "🔥 Warming up cache"
+    php bin/console cache:warmup --env=prod
+
+    echo "📦 Dumping environment variables"
+    composer dump-env prod
+
+    INSTALL_FLAGS="--no-dev --optimize-autoloader"
 fi
 
 echo "📦 Installing dependencies"
-composer install
-
-if [ "$MODE" = "prod" ]; then
-  echo "🔥 Warming up cache"
-  php bin/console cache:warmup --env=prod
-  
-  echo "📦 Dumping environment variables"
-  composer dump-env prod
-fi
+composer install $INSTALL_FLAGS
