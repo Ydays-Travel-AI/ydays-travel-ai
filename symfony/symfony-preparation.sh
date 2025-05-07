@@ -17,9 +17,6 @@ if [ "$MODE" = "dev" ]; then
     echo "🔐 Generating APP_SECRET for dev"
     ./prepare-app-secret.sh generate
 
-    echo "🔥 Warming up cache"
-    php bin/console cache:warmup --env=dev
-
     INSTALL_FLAGS=""
 else
     echo "🔐 Checking APP_SECRET for prod"
