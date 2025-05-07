@@ -11,7 +11,11 @@ import { CardsComponent } from "./cards/cards.component";
 @Component({
   selector: 'app-root',
   standalone: true,
+<<<<<<< HEAD
   imports: [RouterOutlet, ConnectFormComponent, LoginComponent, RouterLink, RouterLinkActive, NavbarComponent, HeroComponent, SearchComponent, FooterComponent, CardsComponent],
+=======
+  imports: [RouterOutlet, ConnectFormComponent, LoginComponent, RouterLink, RouterLinkActive],
+>>>>>>> 40b78d732d5fe51095869a25ed888ac2c694a78f
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
