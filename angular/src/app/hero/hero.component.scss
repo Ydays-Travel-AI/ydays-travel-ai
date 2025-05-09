@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+h1{
+    font-family: 'Poppins', sans-serif;
+    font-weight: normal;
+    font-size: 60px;
+    margin-bottom: 100px;
+}
+span{
+    font-weight: 500;
+    font-size: 70px;
+}
+
+.info{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.info h1{
+    color: var(--Noir, #191818);
+    text-align: center;
+    font-family: Poppins;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+}
+.info span{
+    color: var(--Green-Pea-500, #0EBB81);
+    font-family: Poppins;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+}
+
+.hero {
+    // margin: 0px 84px 0px 84px;
+    color: white;
+    font-size: 2.5rem;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // width: 1200px;
+    height: 599px;
+    // height: 45vh; // Ajuste selon ton besoin
+    // background: url('https://s3-alpha-sig.figma.com/img/bdb1/6134/4281e5a963002dc168f33cdc182b26f3?Expires=1743984000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=LulWWEnODKokTqp3t1gdYHQSqJiGuFvZjkEAmyuGbPssEKl0UxwvYcXmZBJcb03T3wR8t6-AHCH5vyt1TUCRmIiUz3KPb3TQEHhJZO0-KQp78drWmDxEx0DNzcxAV7qFWPryfdyzpMDI~lEPFSUCLBvAviwHT6FvyIUEOXC-DpLxp1wSVHEk2tDd1QhHWbvYnZC30pCf8Rssn4Hxx7RlzNpFfgrL9Z1d9mK1i6DOR2kYPqAzO-yKBY~LMosYo8Jd4Y9X1DG4KpnjVhG6aGgTB7qluSQOz7Onho9GsysWV2cJk5~zUn1XftHJukeR95~Izxttvu~KRxPRChzliicDFg__') no-repeat center center/cover;
+    background: url('/assets/test_copy.png') no-repeat center center/cover;
+    text-align: center;
+}
