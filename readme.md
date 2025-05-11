@@ -22,7 +22,7 @@ Créer les containers (--build obligatoire pour reconstruire l'image avec les no
 ```bash
 docker compose \
 -f compose.yaml \
--f compose.prod.yaml
+-f compose.prod.yaml \
 up \
 -d \
 --build
