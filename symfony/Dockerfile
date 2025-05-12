@@ -116,7 +116,6 @@ RUN echo >> .env && \
 
 EXPOSE 9000
 
-RUN chmod u+x ./symfony-preparation.sh && \
-    ./symfony-preparation.sh prod
+RUN ./symfony-preparation.sh prod
 
 USER www-data
