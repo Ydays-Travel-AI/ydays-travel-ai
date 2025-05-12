@@ -2,6 +2,7 @@
 set -e
 
 MODE=$1
+ENV_FILE=".env.local"
 
 if [ -z "$MODE" ]; then
     echo "❌ Error: Missing MODE argument (e.g., 'dev' or 'prod')"
@@ -13,23 +14,36 @@ if [ "$MODE" != "dev" ] && [ "$MODE" != "prod" ]; then
     exit 1
 fi
 
-if [ "$MODE" = "dev" ]; then
-    echo "🔐 Generating APP_SECRET for dev"
-    ./prepare-app-secret.sh generate
+# Checking APP_SECRET
+if grep -qsE '^APP_SECRET=.*[^[:space:]]+' "$ENV_FILE"; then
+    APP_SECRET_EXISTS=true
+else 
+    APP_SECRET_EXISTS=false
+fi
 
+if [ "$MODE" = "dev" ]; then
+    if [ "$APP_SECRET_EXISTS" = false ]; then
+        SECRET=$(./generate-app-secret.sh)
+        echo "APP_SECRET=$SECRET" >> "$ENV_FILE"
+        echo "🔐 APP_SECRET created in $ENV_FILE : $SECRET"
+    fi
     INSTALL_FLAGS=""
 else
     echo "🔐 Checking APP_SECRET for prod"
-    ./prepare-app-secret.sh check
-
-    echo "🔥 Warming up cache"
-    php bin/console cache:warmup --env=prod
-
-    echo "📦 Dumping environment variables"
-    composer dump-env prod
-
+    if [ "$APP_SECRET_EXISTS" = false ]; then
+        echo "❌ APP_SECRET is missing and must be set in $ENV_FILE"
+        exit 1
+    fi
     INSTALL_FLAGS="--no-dev --optimize-autoloader"
 fi
 
 echo "📦 Installing dependencies"
 composer install $INSTALL_FLAGS
+
+if [ "$MODE" = "prod" ]; then
+    echo "🔥 Warming up cache"
+    php bin/console cache:warmup --env=prod
+
+    echo "📦 Dumping environment variables"
+    composer dump-env prod
+fi

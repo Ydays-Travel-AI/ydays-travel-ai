@@ -13,9 +13,15 @@ Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / 
 
 ### En production
 
-L'application nécessite un APP_SECRET unique et qui ne change pas entre les builds (notamment pour les tokens). En production, il faut le générer à la main grâce à la commande `prepare-app-secret.sh generate` avant de lancer les services (nécessite PHP en local)
+L'application nécessite un clé unique (variable `APP_SECRET` dans le fichier `.env.local`), notamment pour la création de tokens. Celle-ci ne doit pas changer entre les builds en production. Elle doit donc être générée une seule fois à la main via :
 
-Tout le projet est inclus dans des containers Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
+```bash
+echo "APP_SECRET=$(docker run --rm \
+-v ./symfony/generate-app-secret.sh:/script.sh \
+php:fpm /script.sh)" >> ./symfony/.env.local
+```
+
+Tout le projet est inclus dans des conteneurs Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
 Créer les containers (--build obligatoire pour reconstruire l'image avec les nouveaux fichiers) :
 
@@ -33,7 +39,7 @@ up \
 Pour développer sur symfony, 2 possibilités :
 
 - Développer en local : l'installation en local de PHP et composer sont nécessaires. Fortement déconseillé sur Windows (lire le paragraphe suivant pour comprendre)
-- Container de développement sur VSCode via l'extension "Remote Development" :
+- Développement conteneurisé sur VSCode via l'extension "Remote Development" :
   - "Open folder in container" : mise en place complète et automatique de l'environnement de développement (extensions, paramètres...) grâce au fichier `devcontainer.json`
   - "Attach to running container" : le développement se fait dans le container sélectionné, mais aucune configuration VSCode n'est prise en compte.
 
