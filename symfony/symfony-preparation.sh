@@ -2,7 +2,6 @@
 set -e
 
 MODE=$1
-ENV_FILE=".env.local"
 
 if [ -z "$MODE" ]; then
     echo "❌ Error: Missing MODE argument (e.g., 'dev' or 'prod')"
@@ -13,6 +12,7 @@ if [ "$MODE" != "dev" ] && [ "$MODE" != "prod" ]; then
     echo "❌ Error: MODE must be either 'dev' or 'prod'"
     exit 1
 fi
+ENV_FILE=".env.$MODE.local"
 
 # Checking APP_SECRET
 if grep -qsE '^APP_SECRET=.*[^[:space:]]+' "$ENV_FILE"; then
@@ -47,3 +47,8 @@ if [ "$MODE" = "prod" ]; then
     echo "📦 Dumping environment variables"
     composer dump-env prod
 fi
+
+echo "🔑 Generating JWT keys"
+php bin/console lexik:jwt:generate-keypair --skip-if-exists
+# WARNING temporaire : les cles JWT doivent etre 
+# persistees, et donc generees en dehors du build en production

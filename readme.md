@@ -18,8 +18,10 @@ L'application nécessite un clé unique (variable `APP_SECRET` dans le fichier `
 ```bash
 echo "APP_SECRET=$(docker run --rm \
 -v ./symfony/generate-app-secret.sh:/script.sh \
-php:fpm /script.sh)" >> ./symfony/.env.local
+php:fpm /script.sh)" >> ./symfony/.env.prod.local
 ```
+
+Il faut absolument modifier les variables de la base de données dans le fichier `.env` avant de lancer l'application en production, car celles-ci ne sont pas sécurisées.
 
 Tout le projet est inclus dans des conteneurs Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
 
