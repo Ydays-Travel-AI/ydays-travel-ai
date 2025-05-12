@@ -13,19 +13,28 @@ Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / 
 
 ### En production
 
-L'application nécessite un clé unique (variable `APP_SECRET` dans le fichier `.env.local`), notamment pour la création de tokens. Celle-ci ne doit pas changer entre les builds en production. Elle doit donc être générée une seule fois à la main via :
+#### Génération des secrets
+
+L'application nécessite des variables sensibles, notamment pour l'authentification. Celle-ci ne doit jamais changer en production.
+
+Il faut donc les générer une seule fois à la main via :
 
 ```bash
 echo "APP_SECRET=$(docker run --rm \
 -v ./symfony/generate-app-secret.sh:/script.sh \
 php:fpm /script.sh)" >> ./symfony/.env.prod.local
+echo "JWT_PASSPHRASE=$(openssl rand -hex 32)" >> ./symfony/.env.prod.local
 ```
 
-Il faut absolument modifier les variables de la base de données dans le fichier `.env` avant de lancer l'application en production, car celles-ci ne sont pas sécurisées.
+> Ces variables seront maintenant stockées dans le fichier `.env.prod.local`, qui n'est pas versionné.
 
-Tout le projet est inclus dans des conteneurs Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour.
+#### Modification des identifiants de la BDD
 
-Créer les containers (--build obligatoire pour reconstruire l'image avec les nouveaux fichiers) :
+Les variables de la base de données (dans `.env` à la racine du projet) doivent être modifiées avant de lancer l'application en production, car celles-ci ne sont pas sécurisées.
+
+#### Docker
+
+Tout le projet est inclus dans des conteneurs Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour (option `--build`) :
 
 ```bash
 docker compose \

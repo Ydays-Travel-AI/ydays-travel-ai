@@ -105,16 +105,18 @@ ENV HOME=/app
 RUN chown -R www-data:www-data . &&\
     chmod -R 775 .
 
+# Copying ./symfont and ./.env from root project
+COPY --chown=www-data:www-data ./.env ./globalenv
 COPY --chown=www-data:www-data symfony .
 
-# Copying the project root .env file
-COPY --chown=www-data:www-data ./.env ./globalenv
+# Merge symfony vars with global vars
 RUN echo >> .env && \
     cat globalenv >> .env && \
     rm globalenv
 
 EXPOSE 9000
 
-RUN ./symfony-preparation.sh prod
+RUN chmod u+x ./symfony-preparation.sh && \
+    ./symfony-preparation.sh prod
 
 USER www-data
