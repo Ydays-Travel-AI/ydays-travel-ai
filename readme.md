@@ -63,6 +63,8 @@ up \
 --build
 ```
 
+Contrairement à la production, il n'est pas nécessaire de spécifier les fichiers compose, car le fichier `docker-compose.override.yaml` est pris en compte par défaut. De plus, les variables sensibles sont générée dynamiquement dans le fichier `.env.dev.local`.
+
 #### Latence liée à la synchronisation (sur Windows)
 
 > Seulement pour WSL (sur Windows)  
