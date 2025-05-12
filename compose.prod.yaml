@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     volumes:
       - ./symfony/nginx.conf:/etc/nginx/conf.d/default.conf
-    restart: always
+    restart: unless-stopped
     depends_on:
       php-fpm:
         condition: service_healthy
@@ -16,7 +16,7 @@ services:
         PHP_VERSION: ${PHP_VERSION}
       target: php-fpm
     env_file: .env # Vars used both by Docker and Symfony
-    restart: always
+    restart: unless-stopped
     healthcheck:
       test: ['CMD-SHELL', 'pidof php-fpm > /dev/null || exit 1']
       interval: 10s
@@ -27,7 +27,7 @@ services:
         condition: service_healthy
 
   mysql:
-    restart: always
+    restart: unless-stopped
 
   phpmyadmin:
-    restart: always
+    restart: unless-stopped
