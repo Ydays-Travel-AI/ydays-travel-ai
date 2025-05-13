@@ -13,6 +13,7 @@ ARG SYMFONY_CLI_URL
 ARG PHP_EXT_INSTALLER_URL
 
 # Configures strict shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008
 RUN apt-get update &&\
