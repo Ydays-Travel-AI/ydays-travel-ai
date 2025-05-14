@@ -16,6 +16,8 @@ class ValidationService
 
     /**
      * Vérifie si le mot de passe respecte les critères de sécurité
+     *
+     * @return array<int, string>
      */
     public function isValidPassword(string $password): array
     {
@@ -33,7 +35,7 @@ class ValidationService
             $errors[] = 'Le mot de passe doit contenir au moins une minuscule';
         }
 
-        if (!preg_match('/[!@#$%^&*(),.?":{}|<>_\-\\[\];\'/+=`~]/', $password)) {
+        if (!preg_match('/[!@#$%^&*(),.?":{}|<>_\-\\[\\];\'\\/+=`~]/', $password)) {
             $errors[] = 'Le mot de passe doit contenir au moins un caractère spécial';
         }
 
