@@ -9,8 +9,6 @@ Le but de cette application est d'organiser des voyages de A à Z, notamment ave
 
 ## Installation
 
-Dans le fichier `.env` inscrire dans `APP_ENV` l'environnement souhaité (dev / prod).
-
 ### En production
 
 #### Génération des secrets
