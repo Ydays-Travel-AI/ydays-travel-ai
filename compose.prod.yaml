@@ -28,6 +28,13 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    entrypoint: |
+      /bin/bash -c "
+        echo '🔄 Applying migrations...'
+        php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing --query-time || exit 1
+        echo '🚀 Starting PHP-FPM...'
+        exec php-fpm
+      "
 
   mysql:
     restart: unless-stopped
@@ -37,4 +44,4 @@ services:
 
 volumes:
   mysql-data:
-    name: "${PROJECT_NAME}-prod-db" 
+    name: '${PROJECT_NAME}-prod-db'
