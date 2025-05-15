@@ -1,28 +1,25 @@
+name: ${PROJECT_NAME}-dev
 services:
   symfony:
-    volumes:
-      - ./symfony:/var/www
-      - symfony-var:/var/www/var
-      - symfony-vendor:/var/www/vendor
-
-  # mailer:
-  #     image: axllent/mailpit
-  #     ports:
-  #         - "1025"
-  #         - "8025"
-  #     environment:
-  #         MP_SMTP_AUTH_ACCEPT_ANY: 1
-  #         MP_SMTP_AUTH_ALLOW_INSECURE: 1
-  symfony-dev:
     build:
-      context: .
-      target: devcontainer
+      context: ./symfony
       args:
         PHP_VERSION: ${PHP_VERSION}
+      target: php-symfony
+    env_file: .env # Vars used both by Docker and Symfony
+    environment:
+      APP_ENV: dev
+    working_dir: /var/www/symfony
     volumes:
-      - .:/workspace
-      - symfony-var:/workspace/symfony/var
-      - symfony-vendor:/workspace/symfony/vendor
+      - ./:/var/www
+      - symfony-var:/var/www/symfony/var
+      - symfony-vendor:/var/www/symfony/vendor
+      - /var/www/angular/node_modules
+      - /var/www/angular/dist
+      - /var/www/angular/.angular
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   phpmyadmin:
     environment:

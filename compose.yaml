@@ -1,18 +1,10 @@
-name: ${PROJECT_NAME}-${APP_ENV}
 services:
-  symfony:
-    build:
-      context: .
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-      target: ${APP_ENV}
+  symfony: # Either Symfony CLI or Nginx
     ports:
       - 8000:8000
     depends_on:
-      - mysql
-    volumes:
-      - ./.env:/var/www/.env
-    restart: always
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: mysql:${MYSQL_VERSION}
@@ -22,18 +14,12 @@ services:
       MYSQL_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     healthcheck:
-      test:
-        [
-          'CMD',
-          'mysqladmin',
-          'ping',
-          '-u',
-          'root',
-          '--password=${DATABASE_ROOT_PASSWORD}',
-        ]
-      timeout: 5s
-      retries: 5
-      start_period: 60s
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 4
+
     volumes:
       - db-data:/var/lib/mysql
     # restart: always
@@ -45,6 +31,7 @@ services:
     ports:
       - 8080:80
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 volumes:
   db-data:

@@ -1,0 +1,5 @@
+symfony/vendor
+.git
+node_modules
+.angular
+dist

@@ -7,7 +7,7 @@
             "request": "launch",
             "port": 9003,
             "pathMappings": {
-                "/var/www": "${workspaceFolder}/symfony"
+                "/var/www/symfony": "${workspaceFolder}/symfony"
             }
         }
     ]

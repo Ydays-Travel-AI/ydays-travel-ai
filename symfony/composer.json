@@ -11,7 +11,7 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.3",
-        "lexik/jwt-authentication-bundle": "*",
+        "lexik/jwt-authentication-bundle": "^3.1",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
@@ -50,6 +50,7 @@
     },
     "scripts": {
         "format": "php-cs-fixer fix",
+        "lint": "phpstan analyse",
         "format-check": "php-cs-fixer fix --dry-run --diff",
         "sync-db": "php bin/console doctrine:schema:update --force",
         "auto-scripts": {
@@ -75,6 +76,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.65",
+        "phpstan/phpstan-symfony": "^2.0",
         "symfony/maker-bundle": "^1.61"
     }
 }

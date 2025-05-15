@@ -1,9 +1,16 @@
-#!/bin/bash
-# Adds APP_SECRET only if it is missing
-if ! grep -qsE '^APP_SECRET=.*[^[:space:]]+' .env.local; then
-    SECRET=$(php -r 'echo bin2hex(random_bytes(16));')
-    echo "APP_SECRET=$SECRET" >> .env.local
-    echo "APP_SECRET created in .env.local : $SECRET"
-else
-    echo "APP_SECRET already exists in .env.local."
+#!/bin/sh
+set -e
+
+if ! command -v php >/dev/null 2>&1; then
+    echo "❌ Erreur: PHP est requis pour générer le secret" >&2
+    exit 1
 fi
+
+SECRET=$(php -r 'echo bin2hex(random_bytes(16));')
+
+if [ -z "$SECRET" ]; then
+    echo "❌ Erreur: Échec de la génération du secret" >&2
+    exit 1
+fi
+
+echo "$SECRET"
