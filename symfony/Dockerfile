@@ -110,10 +110,11 @@ RUN chown -R www-data:www-data . &&\
 COPY --chown=www-data:www-data ./.env ./globalenv
 COPY --chown=www-data:www-data symfony .
 
-# Merge symfony vars with global vars
+# Adding global vars to symfony vars
 RUN echo >> .env && \
     cat globalenv >> .env && \
     rm globalenv
+ENV APP_ENV=prod  
 
 EXPOSE 9000
 
