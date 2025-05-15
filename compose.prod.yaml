@@ -34,3 +34,7 @@ services:
 
   phpmyadmin:
     restart: unless-stopped
+
+volumes:
+  mysql-data:
+    name: "${PROJECT_NAME}-prod-db" 

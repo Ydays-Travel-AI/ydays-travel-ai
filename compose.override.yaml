@@ -29,3 +29,5 @@ services:
 volumes:
   symfony-vendor:
   symfony-var:
+  mysql-data:
+    name: '${PROJECT_NAME}-dev-db'
