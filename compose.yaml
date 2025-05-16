@@ -21,7 +21,7 @@ services:
       retries: 4
 
     volumes:
-      - db-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     # restart: always
 
   phpmyadmin:
@@ -33,5 +33,3 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-volumes:
-  db-data:
