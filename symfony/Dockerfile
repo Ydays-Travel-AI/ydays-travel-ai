@@ -114,7 +114,6 @@ COPY --chown=www-data:www-data symfony .
 RUN echo >> .env && \
     cat globalenv >> .env && \
     rm globalenv
-ENV APP_ENV=prod  
 
 EXPOSE 9000
 

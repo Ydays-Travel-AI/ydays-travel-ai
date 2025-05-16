@@ -17,8 +17,6 @@ services:
         PHP_VERSION: ${PHP_VERSION}
       target: php-fpm
     env_file: .env # Vars used both by Docker and Symfony
-    environment:
-      APP_ENV: prod
     restart: unless-stopped
     healthcheck:
       test: ['CMD-SHELL', 'pidof php-fpm > /dev/null || exit 1']

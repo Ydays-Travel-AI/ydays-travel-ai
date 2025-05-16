@@ -1,8 +1,11 @@
 #!/bin/sh
 set -e
 
-# MODE = dev should be used during runtime
-# MODE = prod should be used during build
+# MODE = dev : is used during runtime
+#   APP_ENV Should be defined during runtime (e.g., in docker-compose)
+# MODE = prod : is used during build
+#   APP_ENV will be defined localy for the build
+
 MODE=$1
 
 if [ -z "$MODE" ]; then
@@ -29,7 +32,7 @@ if [ "$MODE" = "prod" ]; then
         echo "❌ JWT_PASSPHRASE is missing and must be set in $ENV_FILE (check README.md)"
         exit 1
     fi
-
+    export APP_ENV=prod
     INSTALL_FLAGS="--no-dev --optimize-autoloader"
 else
     if [ "$APP_SECRET_EXISTS" = false ]; then
@@ -41,6 +44,11 @@ else
     if [ "$JWT_PASSPHRASE_EXISTS" = false ]; then
         echo "JWT_PASSPHRASE=$(openssl rand -hex 32)" >> "$ENV_FILE"
         echo "🔐 JWT_PASSPHRASE generated in $ENV_FILE"
+    fi
+
+    if [ -z "$APP_ENV" ]; then
+        echo "❌ Error: Missing APP_ENV environment variable"
+        exit 1
     fi
 
     INSTALL_FLAGS=""
