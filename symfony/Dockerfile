@@ -43,7 +43,7 @@ RUN apt-get update &&\
 
 # CLI symfony
 RUN curl -sS "${SYMFONY_CLI_URL}" | bash && \
-    mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+    mv "$HOME/.symfony5/bin/symfony" /usr/local/bin/symfony
 
 # Xdebug
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
@@ -82,7 +82,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     gd \
     opcache \
     zip \
-    mbstring
+    mbstring \
+    intl
 
 WORKDIR /app
 ENV HOME=/app
