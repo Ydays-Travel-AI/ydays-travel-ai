@@ -18,13 +18,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    unzip \
-    libpng-dev \
-    libonig-dev \
-    curl \
-    zip \
-    libfreetype6-dev \
-    libjpeg-dev &&\
+    curl &&\
     apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
 
@@ -74,13 +68,7 @@ ARG PHP_EXT_INSTALLER_URL
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    unzip \
-    libpng-dev \
-    libonig-dev \
-    curl \
-    zip \
-    libfreetype6-dev \
-    libjpeg-dev &&\
+    curl &&\
     apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
 
@@ -109,6 +97,8 @@ COPY --chown=www-data:www-data symfony .
 RUN echo >> .env && \
     cat globalenv >> .env && \
     rm globalenv
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 EXPOSE 9000
 
