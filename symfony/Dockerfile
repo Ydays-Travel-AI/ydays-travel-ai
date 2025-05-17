@@ -95,11 +95,6 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     opcache \
     zip \
     mbstring
-    
-
-# Prevent PHP-FPM from warning about 'user' and 'group' directives when not running as root
-RUN sed -i 's/^user = .*/; user = www-data/' /usr/local/etc/php-fpm.d/www.conf && \
-    sed -i 's/^group = .*/; group = www-data/' /usr/local/etc/php-fpm.d/www.conf
 
 WORKDIR /app
 ENV HOME=/app
@@ -118,5 +113,3 @@ RUN echo >> .env && \
 EXPOSE 9000
 
 RUN ./symfony-preparation.sh prod
-
-USER www-data
