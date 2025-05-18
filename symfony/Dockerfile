@@ -18,9 +18,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    curl &&\
-    apt-get clean &&\
-    rm -rf /var/lib/apt/lists/*
+    curl 
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
@@ -32,25 +30,29 @@ RUN chmod +x /usr/local/bin/install-php-extensions &&\
     opcache \
     zip \
     mbstring \
-    xdebug
+    xdebug \
+    intl
 
 # Dev tools
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
     git \
-    npm
+    npm &&\
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/*
 
 # CLI symfony
 RUN curl -sS "${SYMFONY_CLI_URL}" | bash && \
     mv "$HOME/.symfony5/bin/symfony" /usr/local/bin/symfony
 
-# Xdebug
-RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
+# PHP configurations
+RUN  echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
     echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
     echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
-    echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    
+    echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
+    mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
 EXPOSE 8000
 
 CMD ["/bin/bash", "-c", \
