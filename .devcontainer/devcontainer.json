@@ -4,7 +4,7 @@
     "name": "DevContainer Connection",
     "service": "symfony",
     "dockerComposeFile": ["./../compose.yaml", "./../compose.override.yaml"],
-    "workspaceFolder": "/var/www",
+    "workspaceFolder": "/app",
     "customizations": {
         "vscode": {
             "extensions": [

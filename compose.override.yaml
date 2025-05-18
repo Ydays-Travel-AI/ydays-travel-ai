@@ -9,15 +9,15 @@ services:
     env_file: .env # Vars used both by Docker and Symfony
     environment:
       APP_ENV: dev
-    working_dir: /var/www/symfony
+    working_dir: /app/symfony
     volumes:
-      - ./:/var/www
-      - symfony-var:/var/www/symfony/var
-      - symfony-vendor:/var/www/symfony/vendor
-      - symfony-jwt:/var/www/symfony/config/jwt
-      - /var/www/angular/node_modules
-      - /var/www/angular/dist
-      - /var/www/angular/.angular
+      - ./:/app
+      - symfony-var:/app/symfony/var
+      - symfony-vendor:/app/symfony/vendor
+      - symfony-jwt:/app/symfony/config/jwt
+      - /app/angular/node_modules
+      - /app/angular/dist
+      - /app/angular/.angular
     depends_on:
       mysql:
         condition: service_healthy
