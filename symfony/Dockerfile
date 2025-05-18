@@ -8,17 +8,18 @@ FROM composer:${COMPOSER_VERSION} AS composer
 # ---------------------------------------------------------------------------- #
 #                                  DEVELOPMENT                                 #
 # ---------------------------------------------------------------------------- #
-FROM php:${PHP_VERSION}-cli AS php-symfony
+FROM php:${PHP_VERSION}-fpm AS php-symfony
 ARG SYMFONY_CLI_URL
 ARG PHP_EXT_INSTALLER_URL
 
-# Configures strict shell
+# Configures strict shell pipes (for better debugging)
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    curl 
+    curl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
@@ -39,8 +40,7 @@ RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
     git \
     npm &&\
-    apt-get clean &&\
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # CLI symfony
 RUN curl -sS "${SYMFONY_CLI_URL}" | bash && \
