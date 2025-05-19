@@ -18,7 +18,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    curl && \
+    curl \
+    # unzip is necessary for composer installation
+    unzip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
@@ -70,7 +72,9 @@ ARG PHP_EXT_INSTALLER_URL
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get install -qq -y --no-install-recommends \
-    curl &&\
+    curl \
+    # unzip is necessary for composer installation
+    unzip && \
     apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
 
