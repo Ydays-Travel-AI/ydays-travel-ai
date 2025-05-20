@@ -5,6 +5,7 @@ services:
       context: ./symfony
       args:
         PHP_VERSION: ${PHP_VERSION}
+        COMPOSER_VERSION: ${COMPOSER_VERSION}
       target: php-symfony
     env_file: .env # Vars used both by Docker and Symfony
     environment:

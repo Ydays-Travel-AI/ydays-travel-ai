@@ -15,6 +15,7 @@ services:
       dockerfile: ./symfony/Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
+        COMPOSER_VERSION: ${COMPOSER_VERSION}
       target: php-fpm
     env_file: .env # Vars used both by Docker and Symfony
     restart: unless-stopped
