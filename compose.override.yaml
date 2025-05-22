@@ -13,9 +13,9 @@ services:
     working_dir: /app/symfony
     volumes:
       - ./:/app
+      # Heavy folders that makes WSL lag (on Windows)
       - symfony-var:/app/symfony/var
       - symfony-vendor:/app/symfony/vendor
-      - symfony-jwt:/app/symfony/config/jwt
       - /app/angular/node_modules
       - /app/angular/dist
       - /app/angular/.angular
@@ -29,7 +29,7 @@ services:
       PMA_PASSWORD: ${DATABASE_ROOT_PASSWORD}
 
 volumes:
-  symfony-jwt:
+
   symfony-vendor:
   symfony-var:
   mysql-data:
