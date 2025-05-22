@@ -1,25 +1,22 @@
 name: ${PROJECT_NAME}-dev
 services:
-  symfony:
+  php:
     build:
       context: ./symfony
-      args:
-        PHP_VERSION: ${PHP_VERSION}
       target: php-symfony
-    env_file: .env # Vars used both by Docker and Symfony
     environment:
       APP_ENV: dev
-    working_dir: /var/www/symfony
+    working_dir: /app/symfony
     volumes:
-      - ./:/var/www
-      - symfony-var:/var/www/symfony/var
-      - symfony-vendor:/var/www/symfony/vendor
-      - /var/www/angular/node_modules
-      - /var/www/angular/dist
-      - /var/www/angular/.angular
-    depends_on:
-      mysql:
-        condition: service_healthy
+      - ./:/app
+      # Heavy folders that makes WSL lag (on Windows)
+      - symfony-var:/app/symfony/var
+      - symfony-vendor:/app/symfony/vendor
+      - /app/angular/node_modules
+      - /app/angular/dist
+      - /app/angular/.angular
+    ports:
+      - 8000:8000
 
   phpmyadmin:
     environment:
@@ -27,5 +24,8 @@ services:
       PMA_PASSWORD: ${DATABASE_ROOT_PASSWORD}
 
 volumes:
+
   symfony-vendor:
   symfony-var:
+  mysql-data:
+    name: '${PROJECT_NAME}-dev-db'
