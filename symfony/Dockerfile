@@ -8,11 +8,10 @@ FROM composer:${COMPOSER_VERSION} AS composer_image
 
 FROM php:${PHP_VERSION}-fpm AS base
 
-RUN apt-get update &&\
-    apt-get install -qq -y --no-install-recommends \
-    curl \
+RUN apt-get update && apt-get install --quiet=2 --yes --no-install-recommends \
+    curl=7.88.1-10+deb12u12 \
     # unzip is better for composer installation
-    unzip && \
+    unzip=6.0-28 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer_image /usr/bin/composer /usr/local/bin/composer
@@ -37,10 +36,9 @@ FROM base AS php-symfony
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Dev tools
-RUN apt-get update &&\
-    apt-get install -qq -y --no-install-recommends \
-    git \
-    npm &&\
+RUN apt-get update && apt-get install --quiet=2 --yes --no-install-recommends \
+    git=1:2.39.5-0+deb12u2 \
+    npm=9.2.0~ds1-1 &&\
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN install-php-extensions xdebug
