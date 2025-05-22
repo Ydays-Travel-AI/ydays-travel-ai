@@ -1,7 +1,10 @@
 services:
-  symfony: # Either Symfony CLI or Nginx
-    ports:
-      - 8000:8000
+  php: # Either Symfony CLI or PHP-FPM
+    build:
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        COMPOSER_VERSION: ${COMPOSER_VERSION}
+    env_file: .env # Vars used both by Docker and Symfony
     depends_on:
       mysql:
         condition: service_healthy

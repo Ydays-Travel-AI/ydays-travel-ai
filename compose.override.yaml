@@ -1,13 +1,9 @@
 name: ${PROJECT_NAME}-dev
 services:
-  symfony:
+  php:
     build:
       context: ./symfony
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-        COMPOSER_VERSION: ${COMPOSER_VERSION}
       target: php-symfony
-    env_file: .env # Vars used both by Docker and Symfony
     environment:
       APP_ENV: dev
     working_dir: /app/symfony
@@ -19,9 +15,8 @@ services:
       - /app/angular/node_modules
       - /app/angular/dist
       - /app/angular/.angular
-    depends_on:
-      mysql:
-        condition: service_healthy
+    ports:
+      - 8000:8000
 
   phpmyadmin:
     environment:
