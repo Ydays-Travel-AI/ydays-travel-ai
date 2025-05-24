@@ -4,7 +4,7 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION}
         COMPOSER_VERSION: ${COMPOSER_VERSION}
-    env_file: .env # Vars used both by Docker and Symfony
+    env_file: .env
     depends_on:
       mysql:
         condition: service_healthy
@@ -25,7 +25,6 @@ services:
 
     volumes:
       - mysql-data:/var/lib/mysql
-    # restart: always
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
