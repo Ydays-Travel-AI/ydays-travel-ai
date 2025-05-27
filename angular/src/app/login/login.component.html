@@ -1,1 +1,24 @@
-<app-connect-form></app-connect-form>
+<div class="login-container">
+  <h2>{{ isLoginMode ? 'Connexion' : 'Créer un compte' }}</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [(ngModel)]="email" name="email" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" [(ngModel)]="password" name="password" required>
+    </mat-form-field>
+
+    <button mat-raised-button class="login-button" type="submit">
+      {{ isLoginMode ? 'Se connecter' : 'Créer un compte' }}
+    </button>
+
+  </form>
+
+  <button mat-button (click)="toggleMode()" class="switch-mode">
+    {{ isLoginMode ? "Créer un nouveau compte" : "J'ai déjà un compte" }}
+  </button>
+</div>
