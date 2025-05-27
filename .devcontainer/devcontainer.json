@@ -1,0 +1,49 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
+{
+    "name": "DevContainer Connection",
+    "service": "php",
+    "dockerComposeFile": ["./../compose.yaml", "./../compose.override.yaml"],
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // DEV
+                "bmewburn.vscode-intelephense-client",
+                "github.copilot",
+                "xdebug.php-debug",
+
+                // CI
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                "junstyle.php-cs-fixer",
+                "esbenp.prettier-vscode",
+                "sanderronde.phpstan-vscode",
+
+                // Markdown
+                "shd101wyy.markdown-preview-enhanced",
+                "davidanson.vscode-markdownlint",
+                "valentjn.vscode-ltex"
+            ],
+            // ATTENTION, les settings ne s'appliquent pas dans le devconrtainer, raison inconnue...
+            // Pour les appliquer, il faut les copier dans le settings.json du workspace
+            "settings": {
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "[php]": {
+                    "editor.defaultFormatter": "junstyle.php-cs-fixer" // Formatter uniquement pour PHP
+                },
+                "editor.formatOnSave": true,
+                "php-cs-fixer.executablePath": "${workspaceFolder}/symfony/vendor/bin/php-cs-fixer",
+                "php-cs-fixer.config": "${workspaceFolder}/symfony/.php-cs-fixer.dist.php",
+                "phpstan.binPath": "${workspaceFolder}/symfony/vendor/bin/phpstan",
+                "phpstan.configFile": "${workspaceFolder}/symfony/phpstan.dist.neon",
+                "ltex.language": "fr",
+                "files.encoding": "utf8",
+                "editor.detectIndentation": true,
+                "files.associations": {
+                    "*.neon": "yaml"
+                }
+            }
+        }
+    }
+}

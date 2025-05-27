@@ -1,0 +1,37 @@
+services:
+  php: # Either Symfony CLI or PHP-FPM
+    build:
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        COMPOSER_VERSION: ${COMPOSER_VERSION}
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    environment:
+      MYSQL_DATABASE: ${PROJECT_NAME}
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: ${DATABASE_ADMIN_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 4
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: mysql
+    ports:
+      - 8080:80
+    depends_on:
+      mysql:
+        condition: service_healthy
