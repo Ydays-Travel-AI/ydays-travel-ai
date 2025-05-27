@@ -1,11 +1,16 @@
 <mat-toolbar>
   <span><img src="/assets/logo.svg" alt="Logo" width="50"></span>
   <span class="spacer"></span>
-  <a mat-button routerLink="/">Home</a>
-  <a mat-button routerLink="/">My Trip</a>
-  <a mat-button routerLink="/">Settings</a>
-  <a mat-button routerLink="/">About</a>
+  <a mat-button routerLink="/">Accueil</a>
+  <a mat-button routerLink="/">A propos</a>
+  <a mat-button routerLink="/">Tarifs</a>
+  <a mat-button routerLink="/">Blog</a>
+  <a mat-button routerLink="/">Info</a>
+
   <span class="spacer"></span>
-  <button mat-button class="btn" id="ins"><span>Connexion</span></button>
+  <a mat-button class="btn" id="ins" routerLink="/login">
+    <span>Connexion</span>
+  </a>
+
   <!-- <button mat-button class="btn" id="con"><span>Inscription</span></button> -->
 </mat-toolbar>
