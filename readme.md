@@ -11,9 +11,19 @@ Le but de cette application est d'organiser des voyages de A à Z, notamment ave
 
 ### En production
 
+#### Nettoyage des fichiers
+
+Si le projet a été lancé en mode développement, il faut nettoyer les fichiers générés pour qu'ils n'entrent pas dans le build de production.
+
+```bash
+git clean -ixd  # Supprime les fichiers non versionnés (var/, jwt/, etc.)
+```
+
+> Cette étape est cruciale pour éviter que des fichiers de dev ne contaminent l'image de production
+
 #### Génération des secrets
 
-L'application nécessite des variables sensibles, notamment pour l'authentification. Celle-ci ne doit jamais changer en production.
+L'application nécessite des variables sensibles, notamment pour l'authentification. Celles-ci ne doivent jamais changer en production.
 
 Il faut donc les générer une seule fois à la main via :
 
@@ -30,9 +40,9 @@ echo "JWT_PASSPHRASE=$(openssl rand -hex 32)" >> ./symfony/.env.prod.local
 
 Les variables de la base de données (dans `.env` à la racine du projet) doivent être modifiées avant de lancer l'application en production, car celles-ci ne sont pas sécurisées.
 
-#### Docker
+#### Lancement
 
-Tout le projet est inclus dans des conteneurs Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour (option `--build`) :
+Tout le projet est inclus dans des conteneurs Docker donc les fichiers ne sont pas mis à jour. Un build est obligatoire pour les remettre à jour (option `--build`).
 
 ```bash
 docker compose \

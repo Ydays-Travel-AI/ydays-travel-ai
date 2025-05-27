@@ -2,9 +2,9 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/php
 {
     "name": "DevContainer Connection",
-    "service": "symfony",
+    "service": "php",
     "dockerComposeFile": ["./../compose.yaml", "./../compose.override.yaml"],
-    "workspaceFolder": "/var/www",
+    "workspaceFolder": "/app",
     "customizations": {
         "vscode": {
             "extensions": [
