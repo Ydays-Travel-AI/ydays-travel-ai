@@ -8,10 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-search',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [MatFormFieldModule, MatInputModule, MatInput, MatLabel, MatToolbarModule, MatButtonModule, MatDatepickerModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
@@ -19,3 +21,4 @@ import { MatIconModule } from '@angular/material/icon';
 export class SearchComponent {
 
 }
+

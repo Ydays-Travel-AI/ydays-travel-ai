@@ -3,19 +3,21 @@
   <div class="formsearch">
     <label for="">Localisation</label>
     <br>
-    <input matInput type="text" value="">
+    <input matInput type="text" value="" id="custom-input" placeholder="Pays">
   </div>
   <div class="formsearch">
     <label for="">Date</label>
     <br>
-    <input mat-datepicker type="date" value="">
+    <input mat-datepicker type="date" value="" id="custom-datepicker">
   </div>
   <div class="formsearch">
     <label for="">Nombre de personnes</label>
     <br>
-    <input type="button" value="">
-    <input type="button" value="">
-    <input type="button" value="">
+    <div class="counter-box">
+      <button mat-button class="addmin">-</button>
+      <span>Personne</span>
+      <button mat-button class="addmin">+</button>
+    </div>
   </div>
   <div class="formsearch" id="row4">
     <button type="button" mat-button>Planifie</button>
