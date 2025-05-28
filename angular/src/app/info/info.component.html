@@ -1,0 +1,15 @@
+<div class="info-container">
+  <div class="row" *ngFor="let block of blocks; let i = index" [ngClass]="{ 'reverse': i % 2 !== 0 }">
+    <div class="text">
+      <h3>Next Step</h3>
+      <p>
+        Lorem ipsum dolor sit amet consectetur. Quis amet pellentesque facilisis tristique.
+        Est magna porttitor tincidunt. Integer ut tincidunt dui, bibendum et mauris.
+        Turpis tempor orci congue sagittis pulvinar.
+      </p>
+    </div>
+    <div class="image">
+      <img [src]="block.img" alt="Next Step" />
+    </div>
+  </div>
+</div>

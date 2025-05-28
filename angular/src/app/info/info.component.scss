@@ -1,0 +1,30 @@
+.info-container {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.row.reverse {
+  flex-direction: row-reverse;
+}
+
+.text {
+  flex: 1;
+  max-width: 500px;
+}
+
+.image img {
+  width: 250px;
+  height: auto;
+  border-radius: 1rem;
+  object-fit: cover;
+}
