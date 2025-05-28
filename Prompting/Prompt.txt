@@ -1,0 +1,34 @@
+Je veux voyager depuis XXX
+Je veux partir du XXX au XXX pour un XXX
+Mon budget est de XXXX€ (optionnel)
+Je voudrais un voyage XXXX (optionnel)
+Je souhaite dormir dans XXXX (optionnel)
+Je voudrais aller à XXX
+Les escales XXXX
+Propose moi un logement, un vol et des activités à faire durant le voyage avec des liens de réservations 
+
+
+
+
+
+
+
+
+
+
+
+J'organise un voyage à [destination] en partant de [Départ] du [date de départ] au [date de retour] pour [nombre] personnes. Le budget total est de [budget global] et je préfère un style de voyage [ex : aventure, détente, luxe, économique, culturel, festif, gastronomique].
+
+Peux-tu me proposer un itinéraire détaillé incluant :
+
+Vols (compagnies, escales, prix moyen)
+Hébergements (hôtels, Airbnb, auberges, selon le budget de [montant/nuit])
+Transports locaux (location de voiture, bus, métro, VTC...)
+Activités & excursions incontournables (temps estimé et coût)
+Meilleurs restaurants (spécialités locales, fourchette de prix, horaires)
+Checklist des affaires à emporter (adaptée à la météo et aux activités)
+Conseils pratiques (monnaie, culture, sécurité, applications utiles)
+Donnes-moi une réponse structurée, claire et complète.
+
+
+     
